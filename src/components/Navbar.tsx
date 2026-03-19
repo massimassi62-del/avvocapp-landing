@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Scale, Globe } from 'lucide-react';
+import { Menu, X, Scale, Globe, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const Navbar = () => {
@@ -64,6 +64,14 @@ const Navbar = () => {
           <Link to="/prezzi" className="bg-[#1e3a8a] text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-[#1e40af] transition-all shadow-sm">
             Piani e Prezzi
           </Link>
+
+          <Link 
+            to="/admin" 
+            className="p-2 text-slate-400 hover:text-[#1e3a8a] transition-colors"
+            title="Impostazioni Amministratore"
+          >
+            <Settings size={18} />
+          </Link>
         </div>
 
         {/* Mobile Toggle */}
@@ -99,6 +107,13 @@ const Navbar = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Inizia Ora
+                </Link>
+                <Link 
+                  to="/admin"
+                  className="block w-full mt-4 text-slate-400 font-bold text-center text-sm"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Area Amministratore
                 </Link>
               </div>
             </div>
