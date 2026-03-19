@@ -307,9 +307,9 @@ const Home = () => {
                 <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white mb-6 border border-white/20">
                   <ShieldCheck size={24} />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight">Sicurezza Militare</h3>
+                <h3 className="text-2xl font-bold mb-4 tracking-tight">Sicurezza Avanzata</h3>
                 <p className="text-blue-100 font-medium leading-relaxed">
-                  I tuoi dati sono protetti da crittografia end-to-end e ospitati su server europei conformi al GDPR.
+                  I tuoi dati sono protetti da crittografia avanzata e ospitati su server europei conformi al GDPR.
                 </p>
               </div>
               <div className="mt-8 pt-8 border-t border-white/10">
@@ -594,58 +594,50 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24 bg-white border-t border-slate-100 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">Cosa dicono i nostri clienti</h2>
-            <p className="text-slate-600 font-medium max-w-2xl mx-auto">
-              Unisciti a migliaia di professionisti che hanno già trasformato il loro studio.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Avv. Marco Rossi",
-                role: "Studio Legale Rossi & Associati",
-                text: "AvvocApp ha cambiato radicalmente il nostro modo di lavorare. L'integrazione con l'IA ci permette di redigere atti complessi in metà tempo.",
-                avatar: "https://i.pravatar.cc/150?u=marco"
-              },
-              {
-                name: "Avv. Laura Bianchi",
-                role: "Specialista in Diritto Civile",
-                text: "Finalmente un gestionale moderno, intuitivo e che non richiede mesi di formazione. La gestione delle scadenze è impeccabile.",
-                avatar: "https://i.pravatar.cc/150?u=laura"
-              },
-              {
-                name: "Avv. Giuseppe Verdi",
-                role: "Partner presso LexGlobal",
-                text: "La sicurezza dei dati era la mia priorità. Con AvvocApp dormo sonni tranquilli sapendo che tutto è conforme al GDPR e crittografato.",
-                avatar: "https://i.pravatar.cc/150?u=giuseppe"
-              }
-            ].map((testimonial, i) => (
-              <motion.div 
-                key={i}
-                whileHover={{ y: -10 }}
-                className="p-8 rounded-3xl bg-slate-50 border border-slate-100 relative group"
-              >
-                <div className="flex gap-1 text-amber-400 mb-6">
-                  {[1, 2, 3, 4, 5].map(star => <Star key={star} size={16} fill="currentColor" />)}
-                </div>
-                <p className="text-slate-700 font-medium leading-relaxed mb-8 italic">
-                  "{testimonial.text}"
-                </p>
-                <div className="flex items-center gap-4">
-                  <img src={testimonial.avatar} alt={testimonial.name} className="w-12 h-12 rounded-full border-2 border-white shadow-sm" />
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-sm">{testimonial.name}</h4>
-                    <p className="text-xs text-slate-500 font-medium">{testimonial.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      {/* Start Now Section */}
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="bg-white p-12 lg:p-20 rounded-[3rem] border border-slate-200 shadow-2xl relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-50 rounded-full -ml-32 -mb-32 blur-3xl opacity-50" />
+            
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-[#1e3a8a] text-sm font-bold uppercase tracking-wider mb-8 border border-blue-100">
+                <Sparkles size={16} />
+                Il momento è adesso
+              </div>
+              <h2 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-8 tracking-tight leading-tight">
+                Inizia tu la rivoluzione <br className="hidden lg:block" /> del tuo studio legale.
+              </h2>
+              <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+                Non restare indietro. Unisciti ai professionisti che hanno già scelto l'efficienza dell'IA per gestire pratiche, documenti e clienti.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <Link 
+                  to="/admin" 
+                  onClick={() => trackEvent('engagement', 'demo_click', 'start_now_section')}
+                  className="px-10 py-5 bg-[#1e3a8a] text-white rounded-2xl font-bold text-xl hover:bg-[#1e40af] transition-all shadow-xl flex items-center justify-center gap-3 group w-full sm:w-auto"
+                >
+                  Inizia ora gratis
+                  <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link 
+                  to="/prezzi" 
+                  className="px-10 py-5 bg-white text-slate-700 border-2 border-slate-200 rounded-2xl font-bold text-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-3 w-full sm:w-auto"
+                >
+                  Scopri i Piani
+                </Link>
+              </div>
+              <p className="mt-8 text-slate-400 text-sm font-medium">
+                Prova gratuita di 14 giorni • Nessuna carta richiesta • Setup in 2 minuti
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 

@@ -27,7 +27,7 @@ const Security = () => {
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider mb-6 border border-emerald-100"
           >
             <Shield size={14} />
-            Sicurezza di Grado Militare
+            Sicurezza Avanzata
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
