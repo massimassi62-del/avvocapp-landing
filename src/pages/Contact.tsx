@@ -6,8 +6,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Calendar, Clock, ArrowRight, MessageSquare } from 'lucide-react';
+import { useSettings } from '../context/SettingsContext';
 
 const Contact = () => {
+  const { settings } = useSettings();
+
   return (
     <div className="pt-16 pb-8 bg-white">
       {/* Header */}
@@ -63,9 +66,9 @@ const Contact = () => {
                 <h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">Contatti Diretti</h2>
                 <div className="space-y-4">
                   {[
-                    { icon: Mail, title: "Email", value: "info@avvocapp.it", color: "text-blue-600 bg-blue-50" },
-                    { icon: Phone, title: "Telefono", value: "+39 02 1234567", color: "text-emerald-600 bg-emerald-50" },
-                    { icon: MapPin, title: "Sede", value: "Via Montenapoleone 8, Milano", color: "text-purple-600 bg-purple-50" },
+                    { icon: Mail, title: "Email", value: settings.email, color: "text-blue-600 bg-blue-50" },
+                    { icon: Phone, title: "Telefono", value: settings.phone, color: "text-emerald-600 bg-emerald-50" },
+                    { icon: MapPin, title: "Sede", value: `${settings.address}, ${settings.city}`, color: "text-purple-600 bg-purple-50" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-6 p-6 bg-white rounded-xl border border-slate-200 shadow-sm">
                       <div className={`w-12 h-12 ${item.color} rounded-lg flex items-center justify-center shrink-0`}>

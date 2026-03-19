@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useImages } from '../context/ImageContext';
 import { useBlog, BlogPost } from '../context/BlogContext';
-import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText } from 'lucide-react';
+import { useSettings } from '../context/SettingsContext';
+import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Admin = () => {
   const { images, updateImage, resetImages } = useImages();
   const { posts, addPost, updatePost, deletePost, resetPosts } = useBlog();
+  const { settings, updateSettings, resetSettings } = useSettings();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  // Local state for settings to avoid too many context updates
+  const [localSettings, setLocalSettings] = useState(settings);
+
+  useEffect(() => {
+    setLocalSettings(settings);
+  }, [settings]);
+
+  const handleSaveSettings = () => {
+    updateSettings(localSettings);
+    alert('Impostazioni salvate con successo!');
+  };
 
   // Blog management state
   const [isEditingPost, setIsEditingPost] = useState(false);
@@ -116,11 +130,11 @@ const Admin = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Amministrazione AvvocApp</h1>
-            <p className="text-slate-500 font-medium">Gestisci contenuti, immagini e blog</p>
+            <p className="text-slate-500 font-medium">Gestisci contenuti, immagini, blog e dati di contatto</p>
           </div>
           <div className="flex items-center gap-3">
             <button 
-              onClick={() => { resetImages(); resetPosts(); }}
+              onClick={() => { resetImages(); resetPosts(); resetSettings(); }}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
             >
               <RotateCcw size={16} /> Ripristina Tutto
@@ -128,6 +142,84 @@ const Admin = () => {
             <Link to="/" className="flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-xl text-sm font-bold hover:bg-[#1e40af] transition-all shadow-lg">
               Vedi Sito
             </Link>
+          </div>
+        </div>
+
+        {/* Site Settings Section */}
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+          <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+            <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
+              <SettingsIcon size={20} className="text-blue-600" /> Dati di Contatto e Aziendali
+            </h2>
+            <button 
+              onClick={handleSaveSettings}
+              className="flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-xl text-xs font-bold hover:bg-[#1e40af] transition-all shadow-lg"
+            >
+              <Save size={14} /> Salva Dati
+            </button>
+          </div>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <Phone size={12} /> Telefono
+                </label>
+                <input 
+                  type="text" 
+                  value={localSettings.phone}
+                  onChange={(e) => setLocalSettings(prev => ({ ...prev, phone: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <Mail size={12} /> Email
+                </label>
+                <input 
+                  type="email" 
+                  value={localSettings.email}
+                  onChange={(e) => setLocalSettings(prev => ({ ...prev, email: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <MapPin size={12} /> Indirizzo
+                </label>
+                <input 
+                  type="text" 
+                  value={localSettings.address}
+                  onChange={(e) => setLocalSettings(prev => ({ ...prev, address: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Città</label>
+                <input 
+                  type="text" 
+                  value={localSettings.city}
+                  onChange={(e) => setLocalSettings(prev => ({ ...prev, city: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+            </div>
+            <div className="md:col-span-2 pt-4 border-t border-slate-100">
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                <Video size={12} /> URL Video di Presentazione (YouTube Embed)
+              </label>
+              <input 
+                type="text" 
+                value={localSettings.presentationVideoUrl}
+                onChange={(e) => setLocalSettings(prev => ({ ...prev, presentationVideoUrl: e.target.value }))}
+                className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                placeholder="https://www.youtube.com/embed/..."
+              />
+              <p className="mt-2 text-[10px] text-slate-400 font-medium italic">
+                Usa il formato "embed" di YouTube (es. https://www.youtube.com/embed/ID_VIDEO)
+              </p>
+            </div>
           </div>
         </div>
 

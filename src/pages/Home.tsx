@@ -26,9 +26,11 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useImages } from '../context/ImageContext';
+import { useSettings } from '../context/SettingsContext';
 
 const Home = () => {
   const { images } = useImages();
+  const { settings } = useSettings();
   return (
     <div className="overflow-hidden bg-white">
       {/* Hero Section */}
@@ -87,6 +89,28 @@ const Home = () => {
                 />
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Presentation Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">Scopri AvvocApp in 2 minuti</h2>
+            <p className="text-slate-600 font-medium max-w-2xl mx-auto">
+              Guarda come la nostra piattaforma può rivoluzionare il tuo modo di lavorare.
+            </p>
+          </div>
+          <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-900 group">
+            <iframe 
+              className="w-full h-full"
+              src={settings.presentationVideoUrl}
+              title="AvvocApp Presentation Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
         </div>
       </section>

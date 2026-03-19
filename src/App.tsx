@@ -19,6 +19,7 @@ import Blog from './pages/Blog';
 import Admin from './pages/Admin';
 import { ImageProvider } from './context/ImageContext';
 import { BlogProvider } from './context/BlogContext';
+import { SettingsProvider } from './context/SettingsContext';
 import { initGA, trackPageView } from './services/analytics';
 
 const AppContent = () => {
@@ -57,11 +58,13 @@ export default function App() {
   return (
     <ImageProvider>
       <BlogProvider>
-        <Router>
-          <ScrollToTop />
-          <BackToTopButton />
-          <AppContent />
-        </Router>
+        <SettingsProvider>
+          <Router>
+            <ScrollToTop />
+            <BackToTopButton />
+            <AppContent />
+          </Router>
+        </SettingsProvider>
       </BlogProvider>
     </ImageProvider>
   );

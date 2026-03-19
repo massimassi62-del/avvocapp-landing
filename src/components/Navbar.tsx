@@ -67,10 +67,11 @@ const Navbar = () => {
 
           <Link 
             to="/admin" 
-            className="p-2 text-slate-400 hover:text-[#1e3a8a] transition-colors"
+            className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition-all shadow-md"
             title="Impostazioni Amministratore"
           >
-            <Settings size={18} />
+            <Settings size={14} />
+            <span>Gestisci Sito</span>
           </Link>
         </div>
 
@@ -109,10 +110,11 @@ const Navbar = () => {
                   Inizia Ora
                 </Link>
                 <Link 
-                  to="/admin"
-                  className="block w-full mt-4 text-slate-400 font-bold text-center text-sm"
+                  to="/admin" 
+                  className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-4 mt-4 rounded-xl font-bold text-lg text-center shadow-md"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <Settings size={20} />
                   Area Amministratore
                 </Link>
               </div>
