@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { 
   Sparkles, 
@@ -22,6 +23,14 @@ import { Link } from 'react-router-dom';
 const Features = () => {
   return (
     <div className="pt-16 pb-8 bg-white">
+      <Helmet>
+        <title>Funzionalità AI per Avvocati | AvvocApp</title>
+        <meta name="description" content="Scopri le funzionalità avanzate di AvvocApp: analisi documentale IA, ricerca giurisprudenziale, redazione assistita e portale clienti sicuro." />
+        <meta property="og:title" content="Funzionalità AI per Avvocati | AvvocApp" />
+        <meta property="og:description" content="Analisi documentale, ricerca giurisprudenziale e redazione assistita potenziata dall'IA." />
+        <meta name="twitter:title" content="Funzionalità AI per Avvocati | AvvocApp" />
+        <meta name="twitter:description" content="Scopri come l'IA di AvvocApp può trasformare il tuo studio legale." />
+      </Helmet>
       {/* Hero Section */}
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

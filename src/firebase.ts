@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, signInWithEmailAndPassword, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 
 // Import the Firebase configuration
@@ -13,6 +13,20 @@ export const googleProvider = new GoogleAuthProvider();
 
 // Helper for Google Sign-In
 export const loginWithGoogle = () => signInWithPopup(auth, googleProvider);
+
+// Helper for Email/Password Sign-In
+export const loginWithEmail = (email: string, pass: string) => signInWithEmailAndPassword(auth, email, pass);
+
+// Helper for Password Update
+export const changeUserPassword = async (currentPass: string, newPass: string) => {
+  const user = auth.currentUser;
+  if (!user || !user.email) throw new Error("Utente non autenticato");
+  
+  const credential = EmailAuthProvider.credential(user.email, currentPass);
+  await reauthenticateWithCredential(user, credential);
+  await updatePassword(user, newPass);
+};
+
 export const logout = () => signOut(auth);
 
 // Validate Connection to Firestore

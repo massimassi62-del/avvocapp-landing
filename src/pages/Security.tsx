@@ -4,12 +4,21 @@
  */
 
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { Shield, Lock, Server, Eye, FileCheck, UserCheck, Globe } from 'lucide-react';
 
 const Security = () => {
   return (
     <div className="pt-16 pb-8 bg-white">
+      <Helmet>
+        <title>Sicurezza e Privacy | AvvocApp</title>
+        <meta name="description" content="La sicurezza dei tuoi dati è la nostra priorità. Scopri come AvvocApp protegge il segreto professionale e garantisce la conformità GDPR." />
+        <meta property="og:title" content="Sicurezza e Privacy | AvvocApp" />
+        <meta property="og:description" content="Proteggiamo i dati del tuo studio con le tecnologie più avanzate." />
+        <meta name="twitter:title" content="Sicurezza e Privacy | AvvocApp" />
+        <meta name="twitter:description" content="Scopri i protocolli di sicurezza di AvvocApp." />
+      </Helmet>
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div

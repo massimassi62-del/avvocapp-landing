@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { Calendar, User, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -14,6 +15,14 @@ const Blog = () => {
   
   return (
     <div className="pt-16 pb-8 bg-white">
+      <Helmet>
+        <title>Blog & News Legal Tech | AvvocApp</title>
+        <meta name="description" content="Resta aggiornato sulle ultime novità in ambito Legal Tech, Intelligenza Artificiale e innovazione per studi legali." />
+        <meta property="og:title" content="Blog & News Legal Tech | AvvocApp" />
+        <meta property="og:description" content="Approfondimenti su Legal Tech, Intelligenza Artificiale e il futuro della professione forense." />
+        <meta name="twitter:title" content="Blog & News Legal Tech | AvvocApp" />
+        <meta name="twitter:description" content="Tutte le novità dal mondo Legal Tech e IA." />
+      </Helmet>
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">

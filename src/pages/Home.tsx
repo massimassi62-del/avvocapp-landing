@@ -27,12 +27,23 @@ import {
 import { Link } from 'react-router-dom';
 import { useImages } from '../context/ImageContext';
 import { useSettings } from '../context/SettingsContext';
+import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
   const { images } = useImages();
   const { settings } = useSettings();
   return (
     <div className="overflow-hidden bg-white">
+      <Helmet>
+        <title>AvvocApp - Il Gestionale Intelligente per lo Studio Legale Moderno</title>
+        <meta name="description" content="Automatizza le scadenze, redigi atti con l'IA e gestisci la contabilità del tuo studio legale con AvvocApp. Il gestionale moderno per avvocati." />
+        <meta property="og:title" content="AvvocApp - Il Gestionale Intelligente per lo Studio Legale Moderno" />
+        <meta property="og:description" content="Automatizza le scadenze, redigi atti con l'IA e gestisci la contabilità del tuo studio legale con AvvocApp." />
+        <meta property="og:image" content={images.home.dashboard} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href={window.location.origin} />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative pt-16 pb-8 lg:pt-24 lg:pb-12">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">

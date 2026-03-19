@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { HelpCircle, Plus, Minus } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -51,6 +52,14 @@ const FAQ = () => {
 
   return (
     <div className="pt-16 pb-8 bg-white">
+      <Helmet>
+        <title>Domande Frequenti (FAQ) | AvvocApp</title>
+        <meta name="description" content="Tutte le risposte alle tue domande su AvvocApp: funzionalità, sicurezza, prezzi e come iniziare a usare l'IA nel tuo studio legale." />
+        <meta property="og:title" content="Domande Frequenti (FAQ) | AvvocApp" />
+        <meta property="og:description" content="Tutto quello che devi sapere su AvvocApp e su come può rivoluzionare il tuo modo di lavorare." />
+        <meta name="twitter:title" content="Domande Frequenti (FAQ) | AvvocApp" />
+        <meta name="twitter:description" content="Risposte alle domande più comuni su AvvocApp." />
+      </Helmet>
       <section className="py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1 

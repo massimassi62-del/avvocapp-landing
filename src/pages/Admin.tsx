@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useImages } from '../context/ImageContext';
 import { useBlog, BlogPost } from '../context/BlogContext';
 import { useSettings } from '../context/SettingsContext';
-import { auth, loginWithGoogle, logout } from '../firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video, LogOut } from 'lucide-react';
+import { auth, loginWithGoogle, logout, loginWithEmail, changeUserPassword } from '../firebase';
+import { onAuthStateChanged, User, EmailAuthProvider } from 'firebase/auth';
+import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video, LogOut, Key } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Admin = () => {
@@ -15,6 +16,16 @@ const Admin = () => {
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Login state
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [showEmailLogin, setShowEmailLogin] = useState(false);
+
+  // Password change state
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   // Local state for settings to avoid too many context updates
   const [localSettings, setLocalSettings] = useState(settings);
@@ -43,6 +54,25 @@ const Admin = () => {
     }
   };
 
+  const handleChangePassword = async () => {
+    if (!currentPassword || !newPassword) {
+      alert('Inserisci sia la password attuale che quella nuova.');
+      return;
+    }
+    setIsChangingPassword(true);
+    try {
+      await changeUserPassword(currentPassword, newPassword);
+      alert('Password aggiornata con successo!');
+      setCurrentPassword('');
+      setNewPassword('');
+    } catch (err: any) {
+      console.error(err);
+      alert(`Errore: ${err.message}`);
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
   // Blog management state
   const [isEditingPost, setIsEditingPost] = useState(false);
   const [currentPost, setCurrentPost] = useState<Partial<BlogPost>>({});
@@ -54,6 +84,16 @@ const Admin = () => {
     } catch (err) {
       console.error(err);
       alert('Errore durante l\'accesso con Google');
+    }
+  };
+
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await loginWithEmail(loginEmail, loginPassword);
+    } catch (err: any) {
+      console.error(err);
+      alert(`Errore: ${err.message}`);
     }
   };
 
@@ -90,7 +130,7 @@ const Admin = () => {
     setCurrentPost({
       title: '',
       excerpt: '',
-      author: user?.displayName || '',
+      author: user?.displayName || user?.email || '',
       date: new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' }),
       category: 'Legal Tech',
       image: 'https://picsum.photos/seed/legal/800/600'
@@ -129,6 +169,10 @@ const Admin = () => {
   if (!user) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <Helmet>
+          <title>Accesso Admin | AvvocApp</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
         <div className="max-w-md w-full bg-white rounded-2xl border border-slate-200 shadow-xl p-8">
           <div className="flex justify-center mb-6">
             <div className="p-3 bg-blue-50 rounded-full text-blue-600">
@@ -136,15 +180,61 @@ const Admin = () => {
             </div>
           </div>
           <h1 className="text-2xl font-bold text-center text-slate-900 mb-2 tracking-tight">Accesso Amministratore</h1>
-          <p className="text-center text-slate-500 text-sm mb-8 font-medium">Accedi con il tuo account Google autorizzato</p>
+          <p className="text-center text-slate-500 text-sm mb-8 font-medium">Accedi con il tuo account autorizzato</p>
           
-          <button 
-            onClick={handleLogin}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm"
-          >
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
-            Accedi con Google
-          </button>
+          {!showEmailLogin ? (
+            <div className="space-y-4">
+              <button 
+                onClick={handleLogin}
+                className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm"
+              >
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+                Accedi con Google
+              </button>
+              <button 
+                onClick={() => setShowEmailLogin(true)}
+                className="w-full text-slate-400 text-xs font-bold hover:text-blue-600 transition-all"
+              >
+                Usa Email e Password
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleEmailLogin} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Email</label>
+                <input 
+                  type="email" 
+                  required
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Password</label>
+                <input 
+                  type="password" 
+                  required
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+              <button 
+                type="submit"
+                className="w-full bg-[#1e3a8a] text-white py-3 rounded-xl font-bold text-sm hover:bg-[#1e40af] transition-all shadow-lg"
+              >
+                Accedi
+              </button>
+              <button 
+                type="button"
+                onClick={() => setShowEmailLogin(false)}
+                className="w-full text-slate-400 text-xs font-bold hover:text-blue-600 transition-all"
+              >
+                Torna a Google Login
+              </button>
+            </form>
+          )}
           
           <div className="mt-6 text-center">
             <Link to="/" className="text-xs font-bold text-slate-400 hover:text-[#1e3a8a] transition-all flex items-center justify-center gap-2">
@@ -156,14 +246,20 @@ const Admin = () => {
     );
   }
 
+  const isEmailUser = user.providerData.some(p => p.providerId === 'password');
+
   return (
     <div className="min-h-screen bg-slate-50 p-4 lg:p-8">
+      <Helmet>
+        <title>Pannello Amministrazione | AvvocApp</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Amministrazione AvvocApp</h1>
             <div className="flex items-center gap-2 mt-1">
-              <p className="text-slate-500 font-medium">Benvenuto, {user.displayName}</p>
+              <p className="text-slate-500 font-medium">Benvenuto, {user.displayName || user.email}</p>
               <button onClick={handleLogout} className="text-red-500 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 transition-all" title="Logout">
                 <LogOut size={16} />
               </button>
@@ -265,6 +361,45 @@ const Admin = () => {
             </div>
           </div>
         </div>
+
+        {/* Password Change Section (only for email users) */}
+        {isEmailUser && (
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+            <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
+                <Key size={20} className="text-blue-600" /> Sicurezza Account
+              </h2>
+              <button 
+                onClick={handleChangePassword}
+                disabled={isChangingPassword}
+                className="flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-xl text-xs font-bold hover:bg-[#1e40af] transition-all shadow-lg disabled:opacity-50"
+              >
+                {isChangingPassword ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Save size={14} />} 
+                Aggiorna Password
+              </button>
+            </div>
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Password Attuale</label>
+                <input 
+                  type="password" 
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Nuova Password</label>
+                <input 
+                  type="password" 
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Analytics Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

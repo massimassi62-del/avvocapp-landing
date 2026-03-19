@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Calendar, Clock, ArrowRight, MessageSquare } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
@@ -13,6 +14,14 @@ const Contact = () => {
 
   return (
     <div className="pt-16 pb-8 bg-white">
+      <Helmet>
+        <title>Contatti | AvvocApp</title>
+        <meta name="description" content="Contatta il team di AvvocApp per informazioni, supporto o per richiedere una demo personalizzata del nostro software legale IA." />
+        <meta property="og:title" content="Contatti | AvvocApp" />
+        <meta property="og:description" content="Siamo al tuo fianco. Contattaci per scoprire come AvvocApp può trasformare il tuo studio." />
+        <meta name="twitter:title" content="Contatti | AvvocApp" />
+        <meta name="twitter:description" content="Contatta il team di AvvocApp e richiedi una demo." />
+      </Helmet>
       {/* Header */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

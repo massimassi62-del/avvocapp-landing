@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { 
   CheckCircle2, 
@@ -32,6 +33,14 @@ const Pricing = () => {
 
   return (
     <div className="pt-16 pb-8 bg-white">
+      <Helmet>
+        <title>Piani e Prezzi | AvvocApp</title>
+        <meta name="description" content="Scegli il piano AvvocApp più adatto al tuo studio legale. Soluzioni flessibili per ogni esigenza, dal piano base al premium." />
+        <meta property="og:title" content="Piani e Prezzi | AvvocApp" />
+        <meta property="og:description" content="Trasparenza totale sui costi del tuo studio legale digitale." />
+        <meta name="twitter:title" content="Piani e Prezzi | AvvocApp" />
+        <meta name="twitter:description" content="Scopri i piani di AvvocApp e inizia a risparmiare tempo." />
+      </Helmet>
       {/* Header */}
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
