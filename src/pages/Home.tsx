@@ -79,7 +79,7 @@ const Home = () => {
                   alt="AvvocApp Dashboard" 
                   className="w-full h-auto"
                   onError={(e) => {
-                    e.currentTarget.src = "https://picsum.photos/seed/avvocapp-dash/1600/900";
+                    e.currentTarget.src = "https://picsum.photos/seed/legal-software-ui/1600/900";
                   }}
                   referrerPolicy="no-referrer"
                 />

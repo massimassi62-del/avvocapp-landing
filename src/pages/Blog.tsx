@@ -16,7 +16,7 @@ const Blog = () => {
       author: "Avv. Marco Rossi",
       date: "12 Marzo 2026",
       category: "Legal Tech",
-      image: "https://picsum.photos/seed/legal1/800/600"
+      image: "https://picsum.photos/seed/lawyer-tech/800/600"
     },
     {
       title: "Cybersecurity per Studi Legali: 5 Errori da non commettere",
@@ -24,7 +24,7 @@ const Blog = () => {
       author: "Ing. Sofia Bianchi",
       date: "05 Marzo 2026",
       category: "Sicurezza",
-      image: "https://picsum.photos/seed/security1/800/600"
+      image: "https://picsum.photos/seed/cyber-security/800/600"
     },
     {
       title: "Il Futuro della Professione: Verso lo Studio Legale 4.0",
@@ -32,7 +32,7 @@ const Blog = () => {
       author: "Dott. Luca Verdi",
       date: "28 Febbraio 2026",
       category: "Innovazione",
-      image: "https://picsum.photos/seed/innovation1/800/600"
+      image: "https://picsum.photos/seed/digital-office/800/600"
     }
   ];
 
