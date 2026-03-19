@@ -100,7 +100,7 @@ const Pricing = () => {
             {[
               { 
                 name: 'Piano Base', 
-                price: '25,00', 
+                price: '30,00', 
                 desc: 'Ideale per chi preferisce il controllo locale',
                 footer: 'Salvataggio solo in locale',
                 icon: <Folder size={24} className="text-slate-900" />,
@@ -119,7 +119,7 @@ const Pricing = () => {
               },
               { 
                 name: 'Piano Pro', 
-                price: '50,00', 
+                price: '60,00', 
                 desc: 'La soluzione cloud completa per lo studio moderno',
                 popular: true, 
                 footer: 'Accesso cloud multi-dispositivo',
@@ -142,7 +142,7 @@ const Pricing = () => {
               },
               { 
                 name: 'Piano Premium', 
-                price: '80,00', 
+                price: '120,00', 
                 desc: 'Per studi che richiedono il massimo delle prestazioni',
                 footer: 'Tutto incluso, senza compromessi',
                 icon: <Star size={24} className="text-slate-900" />,
@@ -229,7 +229,7 @@ const Pricing = () => {
                     { label: 'Business Intelligence', base: false, pro: 'Base', premium: 'Avanzata' },
                     { label: 'Limiti storage elevati', base: false, pro: true, premium: 'Estesi' },
                     { label: 'Priorità elaborazione', base: false, pro: false, premium: true },
-                    { label: 'Prezzo', base: '25€', pro: '50€', premium: '80€' },
+                    { label: 'Prezzo', base: '30€', pro: '60€', premium: '120€' },
                   ].map((row, idx) => (
                     <tr key={idx} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} border-b border-slate-100 last:border-0`}>
                       <td className="p-6 font-medium text-slate-700">{row.label}</td>

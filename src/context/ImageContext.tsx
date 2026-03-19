@@ -15,12 +15,12 @@ interface ImageConfig {
 
 const DEFAULT_IMAGES: ImageConfig = {
   home: {
-    dashboard: "https://picsum.photos/seed/legal-software-ui/1600/900",
+    dashboard: "/dashboard.png",
   },
   blog: {
-    post1: "https://picsum.photos/seed/lawyer-tech/800/600",
-    post2: "https://picsum.photos/seed/cyber-security/800/600",
-    post3: "https://picsum.photos/seed/digital-office/800/600",
+    post1: "/pratiche.png",
+    post2: "/calcola parcella.png",
+    post3: "/report andamento studio.png",
   }
 };
 

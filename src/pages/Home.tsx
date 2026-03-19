@@ -159,7 +159,7 @@ const Home = () => {
               <div className="rounded-2xl border border-white/20 shadow-2xl overflow-hidden bg-white/5 backdrop-blur-md p-2">
                 <div className="rounded-xl overflow-hidden border border-white/10">
                   <img 
-                    src={images.home.dashboard} 
+                    src={encodeURI(images.home.dashboard)} 
                     alt="AvvocApp Dashboard" 
                     className="w-full h-auto"
                     onError={(e) => {
@@ -402,7 +402,7 @@ const Home = () => {
               {
                 title: "Gestione Pratiche Evoluta",
                 desc: "La gestione delle pratiche in AvvocApp è pensata come un flusso ordinato, automatico e completamente tracciabile, così che ogni fascicolo diventi un “contenitore intelligente” capace di organizzare documenti, attività, scadenze e collaborazioni senza richiedere interventi manuali superflui.",
-                img: "pratiche.png",
+                img: "/pratiche.png",
                 reverse: false,
                 details: [
                   {
@@ -430,7 +430,7 @@ const Home = () => {
               {
                 title: "Calcolo Parcelle e Tributi",
                 desc: "La gestione della parcella in AvvocApp è costruita con la stessa eleganza, precisione e trasparenza che caratterizzano l’intero ecosistema dello studio: ogni attività svolta si traduce in un valore chiaro, documentato e immediatamente fatturabile, senza calcoli manuali o rischi di errore.",
-                img: "calcola parcella.png",
+                img: "/calcola parcella.png",
                 reverse: true,
                 details: [
                   {
@@ -458,7 +458,7 @@ const Home = () => {
               {
                 title: "Analisi e Reportistica",
                 desc: "L’area Analisi e Reportistica di AvvocApp offre una visione chiara, strutturata e immediatamente utilizzabile dell’intera attività dello studio, trasformando dati complessi in informazioni leggibili, comparabili e utili alle decisioni strategiche.",
-                img: "report andamento studio.png",
+                img: "/report andamento studio.png",
                 reverse: false,
                 details: [
                   {
@@ -501,12 +501,12 @@ const Home = () => {
                   <div className="flex-1 w-full">
                     <div className="rounded-xl border border-slate-200 shadow-xl overflow-hidden bg-white group">
                       <img 
-                        src={feature.img} 
+                        src={encodeURI(feature.img)} 
                         alt={feature.title} 
                         className="w-full h-auto group-hover:scale-105 transition-transform duration-700 max-h-[300px] object-cover" 
                         referrerPolicy="no-referrer"
                         onError={(e) => {
-                          e.currentTarget.src = `https://picsum.photos/seed/${feature.img}/1200/800`;
+                          e.currentTarget.src = `https://picsum.photos/seed/${feature.img.replace(/\s/g, '-')}/1200/800`;
                         }}
                       />
                     </div>

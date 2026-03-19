@@ -21,7 +21,7 @@ const DEFAULT_POSTS: BlogPost[] = [
     author: "Avv. Marco Rossi",
     date: "12 Marzo 2026",
     category: "Legal Tech",
-    image: "https://picsum.photos/seed/lawyer-tech/800/600"
+    image: "/pratiche.png"
   },
   {
     id: '2',
@@ -30,7 +30,7 @@ const DEFAULT_POSTS: BlogPost[] = [
     author: "Ing. Sofia Bianchi",
     date: "05 Marzo 2026",
     category: "Sicurezza",
-    image: "https://picsum.photos/seed/cyber-security/800/600"
+    image: "/calcola parcella.png"
   },
   {
     id: '3',
@@ -39,7 +39,7 @@ const DEFAULT_POSTS: BlogPost[] = [
     author: "Dott. Luca Verdi",
     date: "28 Febbraio 2026",
     category: "Innovazione",
-    image: "https://picsum.photos/seed/digital-office/800/600"
+    image: "/report andamento studio.png"
   }
 ];
 
