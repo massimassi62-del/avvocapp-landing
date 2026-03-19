@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useImages } from '../context/ImageContext';
-import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft } from 'lucide-react';
+import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Admin = () => {
@@ -16,6 +16,17 @@ const Admin = () => {
       setError('');
     } else {
       setError('Password errata');
+    }
+  };
+
+  const handleFileUpload = (category: any, key: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateImage(category, key, reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -94,15 +105,31 @@ const Admin = () => {
                 <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Dashboard Preview (Immagine Principale)</label>
                 <div className="grid lg:grid-cols-2 gap-6">
                   <div className="space-y-4">
-                    <input 
-                      type="text" 
-                      value={images.home.dashboard}
-                      onChange={(e) => updateImage('home', 'dashboard', e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm font-medium"
-                      placeholder="Inserisci URL immagine..."
-                    />
+                    <div className="flex flex-col gap-3">
+                      <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-blue-50 text-[#1e3a8a] rounded-xl font-bold text-sm cursor-pointer hover:bg-blue-100 transition-all border border-blue-100">
+                        <Upload size={18} /> Carica Foto dal Computer
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          className="hidden" 
+                          onChange={(e) => handleFileUpload('home', 'dashboard', e)}
+                        />
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                          <span className="text-[10px] font-bold uppercase">URL</span>
+                        </div>
+                        <input 
+                          type="text" 
+                          value={images.home.dashboard}
+                          onChange={(e) => updateImage('home', 'dashboard', e.target.value)}
+                          className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm font-medium"
+                          placeholder="Oppure incolla URL..."
+                        />
+                      </div>
+                    </div>
                     <p className="text-[10px] text-slate-400 leading-relaxed">
-                      L'immagine deve essere un URL pubblico (es. https://...) o il nome di un file caricato nel progetto.
+                      Puoi caricare un file direttamente o incollare un link esterno.
                     </p>
                   </div>
                   <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 shadow-inner">
@@ -129,13 +156,24 @@ const Admin = () => {
                 <div key={post.key} className="grid lg:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest">{post.label}</label>
-                    <input 
-                      type="text" 
-                      value={(images.blog as any)[post.key]}
-                      onChange={(e) => updateImage('blog', post.key, e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm font-medium"
-                      placeholder="Inserisci URL immagine..."
-                    />
+                    <div className="flex flex-col gap-3">
+                      <label className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-slate-50 text-slate-600 rounded-xl font-bold text-xs cursor-pointer hover:bg-slate-100 transition-all border border-slate-200">
+                        <Upload size={14} /> Carica Foto
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          className="hidden" 
+                          onChange={(e) => handleFileUpload('blog', post.key, e)}
+                        />
+                      </label>
+                      <input 
+                        type="text" 
+                        value={(images.blog as any)[post.key]}
+                        onChange={(e) => updateImage('blog', post.key, e.target.value)}
+                        className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-xs font-medium"
+                        placeholder="O incolla URL..."
+                      />
+                    </div>
                   </div>
                   <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 shadow-inner h-32">
                     <img src={(images.blog as any)[post.key]} alt="Preview" className="w-full h-full object-cover" />
