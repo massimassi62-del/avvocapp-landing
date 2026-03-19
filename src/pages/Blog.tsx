@@ -7,37 +7,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Calendar, User, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useImages } from '../context/ImageContext';
+import { useBlog } from '../context/BlogContext';
 
 const Blog = () => {
-  const { images } = useImages();
-  const posts = [
-    {
-      title: "L'Intelligenza Artificiale nel Processo Civile: Opportunità e Rischi",
-      excerpt: "Come l'IA sta trasformando la ricerca giuridica e la redazione degli atti, mantenendo il controllo umano.",
-      author: "Avv. Marco Rossi",
-      date: "12 Marzo 2026",
-      category: "Legal Tech",
-      image: images.blog.post1
-    },
-    {
-      title: "Cybersecurity per Studi Legali: 5 Errori da non commettere",
-      excerpt: "La protezione dei dati dei clienti non è solo un obbligo legale, ma un pilastro della fiducia professionale.",
-      author: "Ing. Sofia Bianchi",
-      date: "05 Marzo 2026",
-      category: "Sicurezza",
-      image: images.blog.post2
-    },
-    {
-      title: "Il Futuro della Professione: Verso lo Studio Legale 4.0",
-      excerpt: "Automazione, collaborazione remota e gestione data-driven: come prepararsi al cambiamento.",
-      author: "Dott. Luca Verdi",
-      date: "28 Febbraio 2026",
-      category: "Innovazione",
-      image: images.blog.post3
-    }
-  ];
-
+  const { posts } = useBlog();
+  
   return (
     <div className="pt-16 pb-8 bg-white">
       <section className="py-10">

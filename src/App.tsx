@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -18,10 +18,20 @@ import Security from './pages/Security';
 import Blog from './pages/Blog';
 import Admin from './pages/Admin';
 import { ImageProvider } from './context/ImageContext';
+import { BlogProvider } from './context/BlogContext';
+import { initGA, trackPageView } from './services/analytics';
 
 const AppContent = () => {
   const location = useLocation();
   const isAdminPage = location.pathname === '/admin';
+
+  useEffect(() => {
+    initGA();
+  }, []);
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location]);
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
@@ -46,11 +56,13 @@ const AppContent = () => {
 export default function App() {
   return (
     <ImageProvider>
-      <Router>
-        <ScrollToTop />
-        <BackToTopButton />
-        <AppContent />
-      </Router>
+      <BlogProvider>
+        <Router>
+          <ScrollToTop />
+          <BackToTopButton />
+          <AppContent />
+        </Router>
+      </BlogProvider>
     </ImageProvider>
   );
 }
