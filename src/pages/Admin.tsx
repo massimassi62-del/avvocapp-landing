@@ -5,7 +5,7 @@ import { useBlog, BlogPost } from '../context/BlogContext';
 import { useSettings } from '../context/SettingsContext';
 import { auth, loginWithGoogle, logout, loginWithEmail, changeUserPassword, uploadFileToStorage } from '../firebase';
 import { onAuthStateChanged, User, EmailAuthProvider } from 'firebase/auth';
-import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video, LogOut, Key, Sparkles } from 'lucide-react';
+import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video, LogOut, Key, Sparkles, CheckCircle, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Admin = () => {
@@ -17,6 +17,14 @@ const Admin = () => {
   const [authLoading, setAuthLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [uploadingKey, setUploadingKey] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  useEffect(() => {
+    if (statusMessage) {
+      const timer = setTimeout(() => setStatusMessage(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [statusMessage]);
 
   // Login state
   const [loginEmail, setLoginEmail] = useState('');
@@ -50,9 +58,10 @@ const Admin = () => {
     setIsSaving(true);
     try {
       await updateSettings(localSettings);
-      alert('Impostazioni salvate con successo!');
-    } catch (err) {
+      setStatusMessage({ text: 'Impostazioni salvate con successo!', type: 'success' });
+    } catch (err: any) {
       console.error(err);
+      setStatusMessage({ text: `Errore: ${err.message}`, type: 'error' });
     } finally {
       setIsSaving(false);
     }
@@ -60,18 +69,18 @@ const Admin = () => {
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword) {
-      alert('Inserisci sia la password attuale che quella nuova.');
+      setStatusMessage({ text: 'Inserisci sia la password attuale che quella nuova.', type: 'error' });
       return;
     }
     setIsChangingPassword(true);
     try {
       await changeUserPassword(currentPassword, newPassword);
-      alert('Password aggiornata con successo!');
+      setStatusMessage({ text: 'Password aggiornata con successo!', type: 'success' });
       setCurrentPassword('');
       setNewPassword('');
     } catch (err: any) {
       console.error(err);
-      alert(`Errore: ${err.message}`);
+      setStatusMessage({ text: `Errore: ${err.message}`, type: 'error' });
     } finally {
       setIsChangingPassword(false);
     }
@@ -87,7 +96,7 @@ const Admin = () => {
       await loginWithGoogle();
     } catch (err: any) {
       console.error(err);
-      alert(`Errore durante l'accesso con Google: ${err.message || 'Errore sconosciuto'}`);
+      setStatusMessage({ text: `Errore durante l'accesso con Google: ${err.message || 'Errore sconosciuto'}`, type: 'error' });
     }
   };
 
@@ -97,7 +106,7 @@ const Admin = () => {
       await loginWithEmail(loginEmail, loginPassword);
     } catch (err: any) {
       console.error(err);
-      alert(`Errore: ${err.message}`);
+      setStatusMessage({ text: `Errore: ${err.message}`, type: 'error' });
     }
   };
 
@@ -124,10 +133,10 @@ const Admin = () => {
         } else {
           await updateImage(category, key, downloadUrl);
         }
-        alert('Immagine caricata con successo!');
+        setStatusMessage({ text: 'Immagine caricata con successo!', type: 'success' });
       } catch (err: any) {
         console.error(err);
-        alert(`Errore durante il caricamento: ${err.message}`);
+        setStatusMessage({ text: `Errore durante il caricamento: ${err.message}`, type: 'error' });
       } finally {
         setIsSaving(false);
         setUploadingKey(null);
@@ -144,10 +153,10 @@ const Admin = () => {
         const path = `videos/presentation_${Date.now()}_${file.name}`;
         const downloadUrl = await uploadFileToStorage(file, path);
         setLocalSettings(prev => ({ ...prev, presentationVideoUrl: downloadUrl }));
-        alert('Video caricato con successo! Ricorda di salvare le impostazioni.');
+        setStatusMessage({ text: 'Video caricato con successo! Ricorda di salvare le impostazioni.', type: 'success' });
       } catch (err: any) {
         console.error(err);
-        alert(`Errore durante il caricamento del video: ${err.message}`);
+        setStatusMessage({ text: `Errore durante il caricamento del video: ${err.message}`, type: 'error' });
       } finally {
         setIsSaving(false);
         setUploadingKey(null);
@@ -783,8 +792,13 @@ const Admin = () => {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Immagine Copertina</label>
-                    <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3">
+                    <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative">
                       <img src={currentPost.image} alt="" className="w-full h-full object-cover" />
+                      {uploadingKey === 'blog_' && (
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                          <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
                     </div>
                     <label className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-slate-50 text-slate-600 rounded-xl font-bold text-xs cursor-pointer hover:bg-slate-100 transition-all border border-slate-200">
                       <Upload size={14} /> Cambia Foto
@@ -824,6 +838,27 @@ const Admin = () => {
               </button>
             </div>
           </div>
+        </div>
+      )}
+      {/* Status Message Toast */}
+      {statusMessage && (
+        <div className={`fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-bottom-4 duration-300 ${
+          statusMessage.type === 'success' 
+            ? 'bg-emerald-50 border-emerald-100 text-emerald-800' 
+            : 'bg-rose-50 border-rose-100 text-rose-800'
+        }`}>
+          {statusMessage.type === 'success' ? (
+            <CheckCircle className="text-emerald-500" size={20} />
+          ) : (
+            <AlertCircle className="text-rose-500" size={20} />
+          )}
+          <p className="font-bold text-sm">{statusMessage.text}</p>
+          <button 
+            onClick={() => setStatusMessage(null)}
+            className="ml-4 p-1 hover:bg-black/5 rounded-lg transition-all"
+          >
+            <X size={16} />
+          </button>
         </div>
       )}
     </div>
