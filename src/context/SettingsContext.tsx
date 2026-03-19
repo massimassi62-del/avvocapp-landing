@@ -107,7 +107,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
       setLoading(false);
     }, (error) => {
-      handleFirestoreError(error, OperationType.GET, path);
+      console.error(`Error loading settings from ${path}:`, error);
       setLoading(false);
     });
 

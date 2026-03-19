@@ -39,40 +39,40 @@ const AppContent = () => {
 
   return (
     <HelmetProvider>
-      <ErrorBoundary>
-        <div className="min-h-screen bg-white font-sans selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
-          {!isAdminPage && <Navbar />}
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/ai-legale" element={<Features />} />
-              <Route path="/prezzi" element={<Pricing />} />
-              <Route path="/sicurezza" element={<Security />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/contatti" element={<Contact />} />
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
-          </main>
-          {!isAdminPage && <Footer />}
-        </div>
-      </ErrorBoundary>
+      <div className="min-h-screen bg-white font-sans selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
+        {!isAdminPage && <Navbar />}
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/ai-legale" element={<Features />} />
+            <Route path="/prezzi" element={<Pricing />} />
+            <Route path="/sicurezza" element={<Security />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contatti" element={<Contact />} />
+            <Route path="/admin" element={<Admin />} />
+          </Routes>
+        </main>
+        {!isAdminPage && <Footer />}
+      </div>
     </HelmetProvider>
   );
 };
 
 export default function App() {
   return (
-    <ImageProvider>
-      <BlogProvider>
-        <SettingsProvider>
-          <Router>
-            <ScrollToTop />
-            <BackToTopButton />
-            <AppContent />
-          </Router>
-        </SettingsProvider>
-      </BlogProvider>
-    </ImageProvider>
+    <ErrorBoundary>
+      <ImageProvider>
+        <BlogProvider>
+          <SettingsProvider>
+            <Router>
+              <ScrollToTop />
+              <BackToTopButton />
+              <AppContent />
+            </Router>
+          </SettingsProvider>
+        </BlogProvider>
+      </ImageProvider>
+    </ErrorBoundary>
   );
 }

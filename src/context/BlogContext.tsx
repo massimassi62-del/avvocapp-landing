@@ -128,7 +128,7 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setPosts(blogPosts);
       setLoading(false);
     }, (error) => {
-      handleFirestoreError(error, OperationType.LIST, path);
+      console.error(`Error loading blog posts from ${path}:`, error);
       setLoading(false);
     });
 

@@ -81,9 +81,9 @@ const Admin = () => {
   const handleLogin = async () => {
     try {
       await loginWithGoogle();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert('Errore durante l\'accesso con Google');
+      alert(`Errore durante l'accesso con Google: ${err.message || 'Errore sconosciuto'}`);
     }
   };
 

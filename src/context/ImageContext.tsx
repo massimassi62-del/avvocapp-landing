@@ -99,7 +99,7 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
       setLoading(false);
     }, (error) => {
-      handleFirestoreError(error, OperationType.GET, path);
+      console.error(`Error loading images from ${path}:`, error);
       setLoading(false);
     });
 
