@@ -25,8 +25,10 @@ import {
   BarChart3
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useImages } from '../context/ImageContext';
 
 const Home = () => {
+  const { images } = useImages();
   return (
     <div className="overflow-hidden bg-white">
       {/* Hero Section */}
@@ -75,7 +77,7 @@ const Home = () => {
               <div className="absolute -inset-4 bg-blue-100/50 blur-3xl rounded-[2rem] -z-10" />
               <div className="rounded-xl border border-slate-200 shadow-2xl overflow-hidden bg-white">
                 <img 
-                  src="dashboard.png" 
+                  src={images.home.dashboard} 
                   alt="AvvocApp Dashboard" 
                   className="w-full h-auto"
                   onError={(e) => {
