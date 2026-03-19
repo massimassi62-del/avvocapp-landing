@@ -13,7 +13,7 @@ const Contact = () => {
   const { settings } = useSettings();
 
   return (
-    <div className="pt-16 pb-8 bg-white">
+    <div className="pb-8 bg-white">
       <Helmet>
         <title>Contatti | AvvocApp</title>
         <meta name="description" content="Contatta il team di AvvocApp per informazioni, supporto o per richiedere una demo personalizzata del nostro software legale IA." />

@@ -51,7 +51,7 @@ const FAQ = () => {
   ];
 
   return (
-    <div className="pt-16 pb-8 bg-white">
+    <div className="pb-8 bg-white">
       <Helmet>
         <title>Domande Frequenti (FAQ) | AvvocApp</title>
         <meta name="description" content="Tutte le risposte alle tue domande su AvvocApp: funzionalità, sicurezza, prezzi e come iniziare a usare l'IA nel tuo studio legale." />

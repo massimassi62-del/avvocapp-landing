@@ -16,11 +16,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="bg-[#1e3a8a] p-2 rounded-lg">
-                <Scale className="text-white w-5 h-5" />
-              </div>
-              <span className="text-xl font-bold text-white tracking-tight">Avvoc<span className="text-blue-400">App</span></span>
+            <Link to="/" className="flex items-center gap-2 mb-6 group">
+              <Scale className="text-white w-7 h-7" strokeWidth={2.5} />
+              <span className="text-xl font-bold text-white tracking-tight">AvvocApp</span>
             </Link>
             <p className="text-sm leading-relaxed max-w-sm mb-8 text-slate-400 font-medium">
               Il gestionale studio legale moderno, intuitivo e potenziato dall'intelligenza artificiale per avvocati che guardano al futuro.
@@ -68,7 +66,7 @@ const Footer = () => {
           <p>© 2026 AvvocApp. Tutti i diritti riservati.</p>
           <div className="flex flex-wrap justify-center gap-8">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Termini di Servizio</a>
+            <Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link>
             <a href="#" className="hover:text-white transition-colors">GDPR</a>
             <Link to="/admin" className="text-slate-500 hover:text-white transition-colors">Admin</Link>
           </div>

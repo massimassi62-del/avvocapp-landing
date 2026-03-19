@@ -14,7 +14,7 @@ const Blog = () => {
   const { posts } = useBlog();
   
   return (
-    <div className="pt-16 pb-8 bg-white">
+    <div className="pb-8 bg-white">
       <Helmet>
         <title>Blog & News Legal Tech | AvvocApp</title>
         <meta name="description" content="Resta aggiornato sulle ultime novità in ambito Legal Tech, Intelligenza Artificiale e innovazione per studi legali." />

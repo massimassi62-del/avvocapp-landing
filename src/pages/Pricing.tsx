@@ -32,7 +32,7 @@ const Pricing = () => {
   const yearlySavings = monthlySavings * 12;
 
   return (
-    <div className="pt-16 pb-8 bg-white">
+    <div className="pb-8 bg-white">
       <Helmet>
         <title>Piani e Prezzi | AvvocApp</title>
         <meta name="description" content="Scegli il piano AvvocApp più adatto al tuo studio legale. Soluzioni flessibili per ogni esigenza, dal piano base al premium." />

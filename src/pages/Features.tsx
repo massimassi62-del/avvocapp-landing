@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
 
 const Features = () => {
   return (
-    <div className="pt-16 pb-8 bg-white">
+    <div className="pb-8 bg-white">
       <Helmet>
         <title>Funzionalità AI per Avvocati | AvvocApp</title>
         <meta name="description" content="Scopri le funzionalità avanzate di AvvocApp: analisi documentale IA, ricerca giurisprudenziale, redazione assistita e portale clienti sicuro." />

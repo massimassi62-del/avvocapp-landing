@@ -108,6 +108,7 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const updateImage = async (category: keyof ImageConfig, key: string, url: string) => {
     const path = 'images/config';
+    console.log(`Aggiornamento immagine: ${category}.${key} -> ${url}`);
     try {
       const newImages = {
         ...images,
@@ -117,7 +118,9 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       };
       await setDoc(doc(db, path), newImages);
+      console.log('Configurazione immagini aggiornata con successo su Firestore');
     } catch (error) {
+      console.error('Errore durante l\'aggiornamento dell\'immagine su Firestore:', error);
       handleFirestoreError(error, OperationType.WRITE, path);
     }
   };

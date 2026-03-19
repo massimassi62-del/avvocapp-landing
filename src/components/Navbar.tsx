@@ -13,6 +13,8 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState('IT');
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
+  const isScrolledOrNotHome = isScrolled || !isHomePage;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -30,13 +32,13 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm py-3' : 'bg-transparent py-5'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolledOrNotHome ? 'bg-white shadow-lg border-b border-slate-100 py-2' : 'bg-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="bg-[#1e3a8a] p-1.5 rounded-lg">
-            <Scale className="text-white w-5 h-5" />
-          </div>
-          <span className="text-xl font-bold text-slate-900 tracking-tight">Avvoc<span className="text-[#1e3a8a]">App</span></span>
+        <Link to="/" className="flex items-center gap-2 group transition-all hover:scale-105 active:scale-95">
+          <Scale className={`${isScrolledOrNotHome ? 'text-[#1e3a8a]' : 'text-white'} w-7 h-7 transition-colors duration-500`} strokeWidth={2.5} />
+          <span className={`text-xl font-bold tracking-tight transition-colors duration-500 ${isScrolledOrNotHome ? 'text-slate-900' : 'text-white'}`}>
+            Avvoc<span className={isScrolledOrNotHome ? 'text-[#1e3a8a]' : 'text-white'}>App</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -45,29 +47,33 @@ const Navbar = () => {
             <Link 
               key={link.name} 
               to={link.href} 
-              className={`text-sm font-semibold transition-colors ${location.pathname === link.href ? 'text-[#1e3a8a]' : 'text-slate-600 hover:text-[#1e3a8a]'}`}
+              className={`text-sm font-semibold transition-colors ${
+                isScrolledOrNotHome 
+                  ? (location.pathname === link.href ? 'text-[#1e3a8a]' : 'text-slate-600 hover:text-[#1e3a8a]')
+                  : (location.pathname === link.href ? 'text-white underline underline-offset-4' : 'text-blue-100 hover:text-white')
+              }`}
             >
               {link.name}
             </Link>
           ))}
           
-          <div className="h-4 w-px bg-slate-200 mx-2" />
+          <div className={`h-4 w-px mx-2 ${isScrolledOrNotHome ? 'bg-slate-200' : 'bg-white/20'}`} />
           
           <button 
             onClick={() => setLang(lang === 'IT' ? 'EN' : 'IT')}
-            className="flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#1e3a8a] transition-colors"
+            className={`flex items-center gap-1.5 text-xs font-bold transition-colors ${isScrolledOrNotHome ? 'text-slate-500 hover:text-[#1e3a8a]' : 'text-blue-100 hover:text-white'}`}
           >
             <Globe size={14} />
             {lang}
           </button>
 
-          <Link to="/prezzi" className="bg-[#1e3a8a] text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-[#1e40af] transition-all shadow-sm">
+          <Link to="/prezzi" className={`${isScrolledOrNotHome ? 'bg-[#1e3a8a] text-white hover:bg-[#1e40af]' : 'bg-white text-[#1e3a8a] hover:bg-blue-50'} px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-sm`}>
             Piani e Prezzi
           </Link>
 
           <Link 
             to="/admin" 
-            className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition-all shadow-md"
+            className={`flex items-center gap-2 px-3 py-2 ${isScrolledOrNotHome ? 'bg-blue-600' : 'bg-white/10 backdrop-blur-md border border-white/20'} text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition-all shadow-md`}
             title="Impostazioni Amministratore"
           >
             <Settings size={14} />
@@ -76,7 +82,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button className="lg:hidden text-slate-900 p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        <button className={`lg:hidden p-2 ${isScrolledOrNotHome ? 'text-slate-900' : 'text-white'}`} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>

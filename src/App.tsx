@@ -17,6 +17,8 @@ import Contact from './pages/Contact';
 import Security from './pages/Security';
 import Blog from './pages/Blog';
 import Admin from './pages/Admin';
+import CookiePolicy from './pages/CookiePolicy';
+import CookieBanner from './components/CookieBanner';
 import { ImageProvider } from './context/ImageContext';
 import { BlogProvider } from './context/BlogContext';
 import { SettingsProvider } from './context/SettingsContext';
@@ -27,7 +29,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 
 const AppContent = () => {
   const location = useLocation();
-  const isAdminPage = location.pathname === '/admin';
+  const isAdminPage = location.pathname.startsWith('/admin');
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     initGA();
@@ -41,7 +44,7 @@ const AppContent = () => {
     <HelmetProvider>
       <div className="min-h-screen bg-white font-sans selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
         {!isAdminPage && <Navbar />}
-        <main className="flex-grow">
+        <main className={`flex-grow ${!isAdminPage && !isHomePage ? 'pt-16' : ''}`}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/ai-legale" element={<Features />} />
@@ -50,10 +53,12 @@ const AppContent = () => {
             <Route path="/blog" element={<Blog />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contatti" element={<Contact />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
         {!isAdminPage && <Footer />}
+        <CookieBanner />
       </div>
     </HelmetProvider>
   );

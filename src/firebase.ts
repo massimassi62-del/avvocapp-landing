@@ -31,9 +31,18 @@ export const changeUserPassword = async (currentPass: string, newPass: string) =
 
 // Helper for File Upload to Storage
 export const uploadFileToStorage = async (file: File, path: string) => {
-  const fileRef = ref(storage, path);
-  await uploadBytes(fileRef, file);
-  return getDownloadURL(fileRef);
+  console.log(`Inizio caricamento file: ${file.name} su ${path}`);
+  try {
+    const fileRef = ref(storage, path);
+    const snapshot = await uploadBytes(fileRef, file);
+    console.log('File caricato con successo, recupero URL...');
+    const url = await getDownloadURL(snapshot.ref);
+    console.log(`URL recuperato: ${url}`);
+    return url;
+  } catch (error) {
+    console.error('Errore durante il caricamento su Firebase Storage:', error);
+    throw error;
+  }
 };
 
 export const logout = () => signOut(auth);

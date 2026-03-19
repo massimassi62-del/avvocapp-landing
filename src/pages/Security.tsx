@@ -10,7 +10,7 @@ import { Shield, Lock, Server, Eye, FileCheck, UserCheck, Globe } from 'lucide-r
 
 const Security = () => {
   return (
-    <div className="pt-16 pb-8 bg-white">
+    <div className="pb-8 bg-white">
       <Helmet>
         <title>Sicurezza e Privacy | AvvocApp</title>
         <meta name="description" content="La sicurezza dei tuoi dati è la nostra priorità. Scopri come AvvocApp protegge il segreto professionale e garantisce la conformità GDPR." />
