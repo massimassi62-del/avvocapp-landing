@@ -136,5 +136,24 @@ service cloud.firestore {
       allow create: if isAuthenticated() && (request.auth.uid == userId && request.resource.data.role == 'user') || isAdmin();
       allow update: if isAdmin();
     }
+
+    // ===============================================================
+    // Analytics Rules
+    // ===============================================================
+
+    match /analytics_events/{eventId} {
+      allow create: if true; // Allow visitors to track events
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /analytics_sessions/{sessionId} {
+      allow create, update: if true; // Allow visitors to manage their sessions
+      allow read, delete: if isAdmin();
+    }
+
+    match /analytics_summary/global {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
   }
 }

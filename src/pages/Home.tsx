@@ -30,6 +30,7 @@ import { Link } from 'react-router-dom';
 import { useImages } from '../context/ImageContext';
 import { useSettings } from '../context/SettingsContext';
 import { Helmet } from 'react-helmet-async';
+import { trackEvent } from '../services/analytics';
 
 const Counter = ({ value, duration = 2 }: { value: string, duration?: number }) => {
   const [count, setCount] = React.useState(0);
@@ -661,6 +662,7 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               to="/admin" 
+              onClick={() => trackEvent('engagement', 'demo_click', 'hero_cta')}
               className="px-10 py-5 bg-white text-[#1e3a8a] rounded-2xl font-bold text-xl hover:bg-blue-50 transition-all shadow-2xl flex items-center justify-center gap-2 group"
             >
               Inizia ora gratis
@@ -668,6 +670,7 @@ const Home = () => {
             </Link>
             <Link 
               to="/contatti" 
+              onClick={() => trackEvent('engagement', 'contact_click', 'hero_secondary')}
               className="px-10 py-5 bg-transparent border-2 border-white/30 text-white rounded-2xl font-bold text-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2"
             >
               Parla con un esperto
@@ -724,11 +727,20 @@ const Home = () => {
             Nessun impegno, solo efficienza.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/prezzi" className="w-full sm:w-auto bg-white text-[#1e3a8a] px-8 py-3 rounded-lg text-base font-bold hover:bg-blue-50 transition-all shadow-lg flex items-center justify-center gap-2 group">
+            <Link 
+              to="/prezzi" 
+              onClick={() => trackEvent('engagement', 'pricing_click', 'footer_cta')}
+              className="w-full sm:w-auto bg-white text-[#1e3a8a] px-8 py-3 rounded-lg text-base font-bold hover:bg-blue-50 transition-all shadow-lg flex items-center justify-center gap-2 group"
+            >
               Piani e Prezzi
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a href="https://workflow-engine-81.emergent.host?email=demo@avvocapp.it&password=Demo2026!" target="_blank" className="w-full sm:w-auto bg-transparent text-white border border-white/30 px-8 py-3 rounded-lg text-base font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+            <a 
+              href="https://workflow-engine-81.emergent.host?email=demo@avvocapp.it&password=Demo2026!" 
+              target="_blank" 
+              onClick={() => trackEvent('engagement', 'demo_click', 'footer_demo')}
+              className="w-full sm:w-auto bg-transparent text-white border border-white/30 px-8 py-3 rounded-lg text-base font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+            >
               Esplora la Demo
             </a>
           </div>

@@ -5,8 +5,9 @@ import { useBlog, BlogPost } from '../context/BlogContext';
 import { useSettings } from '../context/SettingsContext';
 import { auth, loginWithGoogle, logout, loginWithEmail, changeUserPassword, uploadFileToStorage } from '../firebase';
 import { onAuthStateChanged, User, EmailAuthProvider } from 'firebase/auth';
-import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video, LogOut, Key, Sparkles, CheckCircle, AlertCircle } from 'lucide-react';
+import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video, LogOut, Key, Sparkles, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getAnalyticsSummary } from '../services/analytics';
 
 const Admin = () => {
   const { images, updateImage, resetImages, loading: imagesLoading } = useImages();
@@ -41,6 +42,28 @@ const Admin = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
+
+  // Analytics state
+  const [analytics, setAnalytics] = useState<{
+    totalVisits: string;
+    uniqueVisitors: string;
+    avgSessionDuration: string;
+    demoClicks: string;
+  } | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+
+  const fetchAnalytics = async () => {
+    setAnalyticsLoading(true);
+    const data = await getAnalyticsSummary();
+    if (data) setAnalytics(data);
+    setAnalyticsLoading(false);
+  };
+
+  useEffect(() => {
+    if (activeSection === 'dashboard' && user) {
+      fetchAnalytics();
+    }
+  }, [activeSection, user]);
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -425,19 +448,36 @@ const Admin = () => {
             {activeSection === 'dashboard' && (
               <div className="space-y-10">
                 {/* Analytics Section */}
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
+                    <BarChart3 size={20} className="text-[#1e3a8a]" /> Statistiche Reali (Firestore)
+                  </h2>
+                  <button 
+                    onClick={fetchAnalytics}
+                    disabled={analyticsLoading}
+                    className="p-2 text-slate-400 hover:text-[#1e3a8a] transition-all"
+                    title="Aggiorna dati"
+                  >
+                    <RefreshCw size={18} className={analyticsLoading ? 'animate-spin' : ''} />
+                  </button>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
-                    { label: 'Visite Totali', value: '1,284', icon: <BarChart3 size={20} />, color: 'text-blue-600', bg: 'bg-blue-50' },
-                    { label: 'Visitatori Unici', value: '856', icon: <Users size={20} />, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                    { label: 'Tempo Medio', value: '3m 42s', icon: <Clock size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
-                    { label: 'Click Demo', value: '142', icon: <MousePointer2 size={20} />, color: 'text-purple-600', bg: 'bg-purple-50' },
+                    { label: 'Visite Totali', value: analytics?.totalVisits || '...', icon: <BarChart3 size={20} />, color: 'text-blue-600', bg: 'bg-blue-50' },
+                    { label: 'Visitatori Unici', value: analytics?.uniqueVisitors || '...', icon: <Users size={20} />, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                    { label: 'Tempo Medio', value: analytics?.avgSessionDuration || '...', icon: <Clock size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
+                    { label: 'Click Demo', value: analytics?.demoClicks || '...', icon: <MousePointer2 size={20} />, color: 'text-purple-600', bg: 'bg-purple-50' },
                   ].map((stat, i) => (
                     <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                       <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center mb-4`}>
                         {stat.icon}
                       </div>
                       <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
-                      <p className="text-2xl font-bold text-slate-900 tracking-tight">{stat.value}</p>
+                      <p className="text-2xl font-bold text-slate-900 tracking-tight">
+                        {analyticsLoading && !analytics ? (
+                          <span className="inline-block w-12 h-6 bg-slate-100 animate-pulse rounded"></span>
+                        ) : stat.value}
+                      </p>
                     </div>
                   ))}
                 </div>
