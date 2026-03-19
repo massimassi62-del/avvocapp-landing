@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useImages } from '../context/ImageContext';
 import { useBlog, BlogPost } from '../context/BlogContext';
 import { useSettings } from '../context/SettingsContext';
-import { auth, loginWithGoogle, logout, loginWithEmail, changeUserPassword } from '../firebase';
+import { auth, loginWithGoogle, logout, loginWithEmail, changeUserPassword, uploadFileToStorage } from '../firebase';
 import { onAuthStateChanged, User, EmailAuthProvider } from 'firebase/auth';
 import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video, LogOut, Key } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -105,18 +105,43 @@ const Admin = () => {
     }
   };
 
-  const handleFileUpload = (category: any, key: string, e: React.ChangeEvent<HTMLInputElement>, isBlog?: boolean) => {
+  const handleFileUpload = async (category: any, key: string, e: React.ChangeEvent<HTMLInputElement>, isBlog?: boolean) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
+      setIsSaving(true);
+      try {
+        const path = isBlog ? `blog/${Date.now()}_${file.name}` : `${category}/${key}_${Date.now()}_${file.name}`;
+        const downloadUrl = await uploadFileToStorage(file, path);
+        
         if (isBlog) {
-          setCurrentPost(prev => ({ ...prev, image: reader.result as string }));
+          setCurrentPost(prev => ({ ...prev, image: downloadUrl }));
         } else {
-          await updateImage(category, key, reader.result as string);
+          await updateImage(category, key, downloadUrl);
         }
-      };
-      reader.readAsDataURL(file);
+      } catch (err: any) {
+        console.error(err);
+        alert(`Errore durante il caricamento: ${err.message}`);
+      } finally {
+        setIsSaving(false);
+      }
+    }
+  };
+
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setIsSaving(true);
+      try {
+        const path = `videos/presentation_${Date.now()}_${file.name}`;
+        const downloadUrl = await uploadFileToStorage(file, path);
+        setLocalSettings(prev => ({ ...prev, presentationVideoUrl: downloadUrl }));
+        alert('Video caricato con successo! Ricorda di salvare le impostazioni.');
+      } catch (err: any) {
+        console.error(err);
+        alert(`Errore durante il caricamento del video: ${err.message}`);
+      } finally {
+        setIsSaving(false);
+      }
     }
   };
 
@@ -346,18 +371,32 @@ const Admin = () => {
             </div>
             <div className="md:col-span-2 pt-4 border-t border-slate-100">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                <Video size={12} /> URL Video di Presentazione (YouTube Embed)
+                <Video size={12} /> Video di Presentazione
               </label>
-              <input 
-                type="text" 
-                value={localSettings.presentationVideoUrl}
-                onChange={(e) => setLocalSettings(prev => ({ ...prev, presentationVideoUrl: e.target.value }))}
-                className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-                placeholder="https://www.youtube.com/embed/..."
-              />
-              <p className="mt-2 text-[10px] text-slate-400 font-medium italic">
-                Usa il formato "embed" di YouTube (es. https://www.youtube.com/embed/ID_VIDEO)
-              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-grow">
+                  <input 
+                    type="text" 
+                    value={localSettings.presentationVideoUrl}
+                    onChange={(e) => setLocalSettings(prev => ({ ...prev, presentationVideoUrl: e.target.value }))}
+                    className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm mb-2"
+                    placeholder="URL video (YouTube o link diretto)..."
+                  />
+                  <p className="text-[10px] text-slate-400 font-medium italic">
+                    Puoi incollare un link YouTube o caricare un file video dal tuo PC.
+                  </p>
+                </div>
+                <label className="shrink-0 flex items-center justify-center gap-2 px-6 py-2 bg-blue-50 text-[#1e3a8a] rounded-xl font-bold text-xs cursor-pointer hover:bg-blue-100 transition-all border border-blue-100 h-fit">
+                  <Video size={16} /> {isSaving ? 'Caricamento...' : 'Carica Video dal PC'}
+                  <input 
+                    type="file" 
+                    accept="video/*"
+                    className="hidden" 
+                    onChange={handleVideoUpload}
+                    disabled={isSaving}
+                  />
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -420,48 +459,87 @@ const Admin = () => {
         </div>
 
         <div className="space-y-8">
-          {/* Home Section */}
+          {/* Image Management Section */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+            <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
               <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
-                <ImageIcon size={20} className="text-blue-600" /> Home Page
+                <ImageIcon size={20} className="text-blue-600" /> Gestione Tutte le Foto
               </h2>
+              <button 
+                onClick={() => { if(window.confirm('Vuoi davvero resettare tutte le immagini ai valori predefiniti?')) resetImages(); }}
+                className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-200 transition-all border border-slate-200"
+              >
+                <RotateCcw size={14} /> Reset Immagini
+              </button>
             </div>
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-8">
+              {/* Home Images */}
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Dashboard Preview (Immagine Principale)</label>
-                <div className="grid lg:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex flex-col gap-3">
-                      <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-blue-50 text-[#1e3a8a] rounded-xl font-bold text-sm cursor-pointer hover:bg-blue-100 transition-all border border-blue-100">
-                        <Upload size={18} /> Carica Foto dal Computer
-                        <input 
-                          type="file" 
-                          accept="image/*"
-                          className="hidden" 
-                          onChange={(e) => handleFileUpload('home', 'dashboard', e)}
-                        />
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
-                          <span className="text-[10px] font-bold uppercase">URL</span>
+                <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div> Home Page
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {Object.entries(images.home).map(([key, url]) => (
+                    <div key={key} className="space-y-3">
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
+                      <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
+                        <img src={url} alt={key} className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                          <label className="p-3 bg-white text-[#1e3a8a] rounded-full cursor-pointer hover:scale-110 transition-all shadow-xl">
+                            <Upload size={20} />
+                            <input 
+                              type="file" 
+                              accept="image/*"
+                              className="hidden" 
+                              onChange={(e) => handleFileUpload('home', key, e)}
+                            />
+                          </label>
                         </div>
-                        <input 
-                          type="text" 
-                          value={images.home.dashboard}
-                          onChange={(e) => updateImage('home', 'dashboard', e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm font-medium"
-                          placeholder="Oppure incolla URL..."
-                        />
                       </div>
+                      <input 
+                        type="text" 
+                        value={url}
+                        onChange={(e) => updateImage('home', key, e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none"
+                        placeholder="URL immagine..."
+                      />
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-relaxed">
-                      Puoi caricare un file direttamente o incollare un link esterno.
-                    </p>
-                  </div>
-                  <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 shadow-inner">
-                    <img src={images.home.dashboard} alt="Preview" className="w-full h-full object-cover" />
-                  </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Blog Images */}
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-600"></div> Immagini Blog (Default)
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  {Object.entries(images.blog).map(([key, url]) => (
+                    <div key={key} className="space-y-3">
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
+                      <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
+                        <img src={url} alt={key} className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                          <label className="p-2 bg-white text-[#1e3a8a] rounded-full cursor-pointer hover:scale-110 transition-all shadow-xl">
+                            <Upload size={16} />
+                            <input 
+                              type="file" 
+                              accept="image/*"
+                              className="hidden" 
+                              onChange={(e) => handleFileUpload('blog', key, e)}
+                            />
+                          </label>
+                        </div>
+                      </div>
+                      <input 
+                        type="text" 
+                        value={url}
+                        onChange={(e) => updateImage('blog', key, e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none"
+                        placeholder="URL immagine..."
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

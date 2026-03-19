@@ -114,14 +114,25 @@ const Home = () => {
             </p>
           </div>
           <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-900 group">
-            <iframe 
-              className="w-full h-full"
-              src={settings.presentationVideoUrl}
-              title="AvvocApp Presentation Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            {settings.presentationVideoUrl?.includes('youtube.com') || settings.presentationVideoUrl?.includes('youtu.be') ? (
+              <iframe 
+                className="w-full h-full"
+                src={settings.presentationVideoUrl}
+                title="AvvocApp Presentation Video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            ) : (
+              <video 
+                className="w-full h-full object-cover"
+                src={settings.presentationVideoUrl}
+                controls
+                poster={images.home.dashboard}
+              >
+                Il tuo browser non supporta il tag video.
+              </video>
+            )}
           </div>
         </div>
       </section>
