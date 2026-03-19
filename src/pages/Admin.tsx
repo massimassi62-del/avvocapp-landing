@@ -2,27 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { useImages } from '../context/ImageContext';
 import { useBlog, BlogPost } from '../context/BlogContext';
 import { useSettings } from '../context/SettingsContext';
-import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video } from 'lucide-react';
+import { auth, loginWithGoogle, logout } from '../firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { Save, RotateCcw, Image as ImageIcon, Lock, ArrowLeft, Upload, BarChart3, Users, Clock, MousePointer2, Plus, Trash2, Edit2, X, FileText, Settings as SettingsIcon, Phone, Mail, MapPin, Video, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Admin = () => {
-  const { images, updateImage, resetImages } = useImages();
-  const { posts, addPost, updatePost, deletePost, resetPosts } = useBlog();
-  const { settings, updateSettings, resetSettings } = useSettings();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { images, updateImage, resetImages, loading: imagesLoading } = useImages();
+  const { posts, addPost, updatePost, deletePost, resetPosts, loading: blogLoading } = useBlog();
+  const { settings, updateSettings, resetSettings, loading: settingsLoading } = useSettings();
+  
+  const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Local state for settings to avoid too many context updates
   const [localSettings, setLocalSettings] = useState(settings);
 
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
     setLocalSettings(settings);
   }, [settings]);
 
-  const handleSaveSettings = () => {
-    updateSettings(localSettings);
-    alert('Impostazioni salvate con successo!');
+  const handleSaveSettings = async () => {
+    setIsSaving(true);
+    try {
+      await updateSettings(localSettings);
+      alert('Impostazioni salvate con successo!');
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Blog management state
@@ -30,13 +48,20 @@ const Admin = () => {
   const [currentPost, setCurrentPost] = useState<Partial<BlogPost>>({});
   const [isNewPost, setIsNewPost] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === 'admin123') {
-      setIsAuthenticated(true);
-      setError('');
-    } else {
-      setError('Password errata');
+  const handleLogin = async () => {
+    try {
+      await loginWithGoogle();
+    } catch (err) {
+      console.error(err);
+      alert('Errore durante l\'accesso con Google');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -44,11 +69,11 @@ const Admin = () => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
         if (isBlog) {
           setCurrentPost(prev => ({ ...prev, image: reader.result as string }));
         } else {
-          updateImage(category, key, reader.result as string);
+          await updateImage(category, key, reader.result as string);
         }
       };
       reader.readAsDataURL(file);
@@ -65,7 +90,7 @@ const Admin = () => {
     setCurrentPost({
       title: '',
       excerpt: '',
-      author: '',
+      author: user?.displayName || '',
       date: new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' }),
       category: 'Legal Tech',
       image: 'https://picsum.photos/seed/legal/800/600'
@@ -74,16 +99,34 @@ const Admin = () => {
     setIsEditingPost(true);
   };
 
-  const savePost = () => {
-    if (isNewPost) {
-      addPost(currentPost as Omit<BlogPost, 'id'>);
-    } else {
-      updatePost(currentPost.id!, currentPost);
+  const savePost = async () => {
+    setIsSaving(true);
+    try {
+      if (isNewPost) {
+        await addPost(currentPost as Omit<BlogPost, 'id'>);
+      } else {
+        await updatePost(currentPost.id!, currentPost);
+      }
+      setIsEditingPost(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSaving(false);
     }
-    setIsEditingPost(false);
   };
 
-  if (!isAuthenticated) {
+  if (authLoading || imagesLoading || blogLoading || settingsLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-slate-500 font-bold animate-pulse">Caricamento...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-2xl border border-slate-200 shadow-xl p-8">
@@ -93,27 +136,16 @@ const Admin = () => {
             </div>
           </div>
           <h1 className="text-2xl font-bold text-center text-slate-900 mb-2 tracking-tight">Accesso Amministratore</h1>
-          <p className="text-center text-slate-500 text-sm mb-8 font-medium">Inserisci la password per gestire le immagini</p>
+          <p className="text-center text-slate-500 text-sm mb-8 font-medium">Accedi con il tuo account Google autorizzato</p>
           
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Password</label>
-              <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
-                placeholder="••••••••"
-              />
-            </div>
-            {error && <p className="text-red-500 text-xs font-bold">{error}</p>}
-            <button 
-              type="submit"
-              className="w-full bg-[#1e3a8a] text-white py-3 rounded-xl font-bold text-sm hover:bg-[#1e40af] transition-all shadow-lg"
-            >
-              Accedi
-            </button>
-          </form>
+          <button 
+            onClick={handleLogin}
+            className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm"
+          >
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+            Accedi con Google
+          </button>
+          
           <div className="mt-6 text-center">
             <Link to="/" className="text-xs font-bold text-slate-400 hover:text-[#1e3a8a] transition-all flex items-center justify-center gap-2">
               <ArrowLeft size={14} /> Torna al sito
@@ -130,11 +162,20 @@ const Admin = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Amministrazione AvvocApp</h1>
-            <p className="text-slate-500 font-medium">Gestisci contenuti, immagini, blog e dati di contatto</p>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="text-slate-500 font-medium">Benvenuto, {user.displayName}</p>
+              <button onClick={handleLogout} className="text-red-500 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 transition-all" title="Logout">
+                <LogOut size={16} />
+              </button>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <button 
-              onClick={() => { resetImages(); resetPosts(); resetSettings(); }}
+              onClick={async () => { 
+                if(window.confirm('Sei sicuro di voler ripristinare tutti i dati predefiniti?')) {
+                  await resetImages(); await resetPosts(); await resetSettings(); 
+                }
+              }}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
             >
               <RotateCcw size={16} /> Ripristina Tutto
@@ -153,9 +194,11 @@ const Admin = () => {
             </h2>
             <button 
               onClick={handleSaveSettings}
-              className="flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-xl text-xs font-bold hover:bg-[#1e40af] transition-all shadow-lg"
+              disabled={isSaving}
+              className="flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-xl text-xs font-bold hover:bg-[#1e40af] transition-all shadow-lg disabled:opacity-50"
             >
-              <Save size={14} /> Salva Dati
+              {isSaving ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Save size={14} />} 
+              Salva Dati
             </button>
           </div>
           <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -420,9 +463,10 @@ const Admin = () => {
                 </button>
                 <button 
                   onClick={savePost}
-                  className="px-6 py-2 bg-[#1e3a8a] text-white rounded-xl text-sm font-bold hover:bg-[#1e40af] transition-all shadow-lg"
+                  disabled={isSaving}
+                  className="px-6 py-2 bg-[#1e3a8a] text-white rounded-xl text-sm font-bold hover:bg-[#1e40af] transition-all shadow-lg disabled:opacity-50"
                 >
-                  Salva Articolo
+                  {isSaving ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : 'Salva Articolo'}
                 </button>
               </div>
             </div>
@@ -430,8 +474,8 @@ const Admin = () => {
         )}
 
         <div className="mt-12 p-6 bg-blue-50 rounded-2xl border border-blue-100 text-center">
-          <p className="text-sm font-bold text-[#1e3a8a] mb-2 tracking-tight">Le modifiche vengono salvate automaticamente nel tuo browser.</p>
-          <p className="text-xs text-blue-400 font-medium">Per renderle permanenti per tutti gli utenti, dovrai caricare i file reali nel progetto.</p>
+          <p className="text-sm font-bold text-[#1e3a8a] mb-2 tracking-tight">Tutte le modifiche sono ora salvate in tempo reale nel database Firebase.</p>
+          <p className="text-xs text-blue-400 font-medium">I dati sono visibili a tutti i visitatori del sito.</p>
         </div>
       </div>
     </div>

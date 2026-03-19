@@ -22,6 +22,8 @@ import { BlogProvider } from './context/BlogContext';
 import { SettingsProvider } from './context/SettingsContext';
 import { initGA, trackPageView } from './services/analytics';
 
+import ErrorBoundary from './components/ErrorBoundary';
+
 const AppContent = () => {
   const location = useLocation();
   const isAdminPage = location.pathname === '/admin';
@@ -35,22 +37,24 @@ const AppContent = () => {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-white font-sans selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
-      {!isAdminPage && <Navbar />}
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/ai-legale" element={<Features />} />
-          <Route path="/prezzi" element={<Pricing />} />
-          <Route path="/sicurezza" element={<Security />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/contatti" element={<Contact />} />
-          <Route path="/admin" element={<Admin />} />
-        </Routes>
-      </main>
-      {!isAdminPage && <Footer />}
-    </div>
+    <ErrorBoundary>
+      <div className="min-h-screen bg-white font-sans selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
+        {!isAdminPage && <Navbar />}
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/ai-legale" element={<Features />} />
+            <Route path="/prezzi" element={<Pricing />} />
+            <Route path="/sicurezza" element={<Security />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contatti" element={<Contact />} />
+            <Route path="/admin" element={<Admin />} />
+          </Routes>
+        </main>
+        {!isAdminPage && <Footer />}
+      </div>
+    </ErrorBoundary>
   );
 };
 

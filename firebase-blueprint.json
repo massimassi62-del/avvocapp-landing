@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "Settings": {
+      "title": "Site Settings",
+      "description": "Global contact and business information for the website.",
+      "type": "object",
+      "properties": {
+        "phone": { "type": "string", "description": "Contact phone number" },
+        "email": { "type": "string", "format": "email", "description": "Contact email address" },
+        "address": { "type": "string", "description": "Physical address" },
+        "city": { "type": "string", "description": "City and province" },
+        "vatNumber": { "type": "string", "description": "VAT number (Partita IVA)" },
+        "presentationVideoUrl": { "type": "string", "description": "YouTube embed URL for the presentation video" },
+        "socials": {
+          "type": "object",
+          "properties": {
+            "linkedin": { "type": "string" },
+            "twitter": { "type": "string" },
+            "facebook": { "type": "string" }
+          }
+        }
+      },
+      "required": ["phone", "email", "address", "city", "vatNumber", "presentationVideoUrl"]
+    },
+    "BlogPost": {
+      "title": "Blog Post",
+      "description": "An article published on the website's blog.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "author": { "type": "string" },
+        "date": { "type": "string" },
+        "category": { "type": "string" },
+        "image": { "type": "string" },
+        "content": { "type": "string" }
+      },
+      "required": ["title", "excerpt", "author", "date", "category", "image"]
+    },
+    "ImageConfig": {
+      "title": "Image Configuration",
+      "description": "Mapping of UI sections to their respective image URLs.",
+      "type": "object",
+      "properties": {
+        "home": {
+          "type": "object",
+          "properties": {
+            "dashboard": { "type": "string" }
+          }
+        },
+        "blog": {
+          "type": "object",
+          "properties": {
+            "post1": { "type": "string" },
+            "post2": { "type": "string" },
+            "post3": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "settings/global": {
+      "schema": "Settings",
+      "description": "Single document containing all global site settings."
+    },
+    "blog_posts": {
+      "schema": "BlogPost",
+      "description": "Collection of blog articles."
+    },
+    "images/config": {
+      "schema": "ImageConfig",
+      "description": "Single document containing image URL mappings."
+    }
+  }
+}
