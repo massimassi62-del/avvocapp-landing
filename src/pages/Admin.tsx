@@ -35,16 +35,8 @@ const Admin = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') || 'dashboard';
-      setActiveSection(hash);
-    };
-
-    window.addEventListener('hashchange', handleHashChange);
-    handleHashChange(); // Initial check
-
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+    setLocalSettings(settings);
+  }, [settings]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -53,10 +45,6 @@ const Admin = () => {
     });
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    setLocalSettings(settings);
-  }, [settings]);
 
   const handleSaveSettings = async () => {
     setIsSaving(true);
@@ -339,46 +327,41 @@ const Admin = () => {
         <nav className="flex-grow p-6 space-y-2 overflow-y-auto">
           <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Menu Principale</div>
           
-          <a 
-            href="#dashboard" 
-            onClick={() => setIsSidebarOpen(false)} 
+          <button 
+            onClick={() => { setActiveSection('dashboard'); setIsSidebarOpen(false); }} 
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeSection === 'dashboard' ? 'bg-blue-50 text-[#1e3a8a] shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <BarChart3 size={18} /> Dashboard
-          </a>
+          </button>
           
-          <a 
-            href="#settings" 
-            onClick={() => setIsSidebarOpen(false)} 
+          <button 
+            onClick={() => { setActiveSection('settings'); setIsSidebarOpen(false); }} 
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeSection === 'settings' ? 'bg-blue-50 text-[#1e3a8a] shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <SettingsIcon size={18} /> Impostazioni
-          </a>
+          </button>
           
-          <a 
-            href="#images" 
-            onClick={() => setIsSidebarOpen(false)} 
+          <button 
+            onClick={() => { setActiveSection('images'); setIsSidebarOpen(false); }} 
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeSection === 'images' ? 'bg-blue-50 text-[#1e3a8a] shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <ImageIcon size={18} /> Immagini
-          </a>
+          </button>
           
-          <a 
-            href="#blog" 
-            onClick={() => setIsSidebarOpen(false)} 
+          <button 
+            onClick={() => { setActiveSection('blog'); setIsSidebarOpen(false); }} 
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeSection === 'blog' ? 'bg-blue-50 text-[#1e3a8a] shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <FileText size={18} /> Blog
-          </a>
+          </button>
 
           {isEmailUser && (
-            <a 
-              href="#security" 
-              onClick={() => setIsSidebarOpen(false)} 
+            <button 
+              onClick={() => { setActiveSection('security'); setIsSidebarOpen(false); }} 
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeSection === 'security' ? 'bg-blue-50 text-[#1e3a8a] shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
             >
               <Key size={18} /> Sicurezza
-            </a>
+            </button>
           )}
         </nav>
 
@@ -428,128 +411,140 @@ const Admin = () => {
 
         {/* Scrollable Area */}
         <main className="flex-grow overflow-y-auto p-4 lg:p-10 space-y-10 bg-white">
-          <div id="dashboard" className="max-w-5xl mx-auto space-y-10">
+          <div className="max-w-5xl mx-auto space-y-10">
             
-            {/* Analytics Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                { label: 'Visite Totali', value: '1,284', icon: <BarChart3 size={20} />, color: 'text-blue-600', bg: 'bg-blue-50' },
-                { label: 'Visitatori Unici', value: '856', icon: <Users size={20} />, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                { label: 'Tempo Medio', value: '3m 42s', icon: <Clock size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
-                { label: 'Click Demo', value: '142', icon: <MousePointer2 size={20} />, color: 'text-purple-600', bg: 'bg-purple-50' },
-              ].map((stat, i) => (
-                <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                  <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center mb-4`}>
-                    {stat.icon}
-                  </div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
-                  <p className="text-2xl font-bold text-slate-900 tracking-tight">{stat.value}</p>
+            {activeSection === 'dashboard' && (
+              <div className="space-y-10">
+                {/* Analytics Section */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {[
+                    { label: 'Visite Totali', value: '1,284', icon: <BarChart3 size={20} />, color: 'text-blue-600', bg: 'bg-blue-50' },
+                    { label: 'Visitatori Unici', value: '856', icon: <Users size={20} />, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                    { label: 'Tempo Medio', value: '3m 42s', icon: <Clock size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
+                    { label: 'Click Demo', value: '142', icon: <MousePointer2 size={20} />, color: 'text-purple-600', bg: 'bg-purple-50' },
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center mb-4`}>
+                        {stat.icon}
+                      </div>
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
+                      <p className="text-2xl font-bold text-slate-900 tracking-tight">{stat.value}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+
+                <div className="p-8 bg-[#1e3a8a] rounded-3xl text-center text-white shadow-xl">
+                  <Sparkles className="mx-auto mb-4 text-blue-300" size={32} />
+                  <h3 className="text-xl font-bold mb-2">Tutto sotto controllo</h3>
+                  <p className="text-blue-100 text-sm max-w-md mx-auto">Tutte le modifiche apportate in questo pannello vengono salvate istantaneamente e sono visibili sul sito pubblico.</p>
+                </div>
+              </div>
+            )}
 
             {/* Site Settings Section */}
-            <section id="settings" className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden scroll-mt-24">
-              <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
-                  <SettingsIcon size={20} className="text-[#1e3a8a]" /> Dati di Contatto e Aziendali
-                </h2>
-                <button 
-                  onClick={handleSaveSettings}
-                  disabled={isSaving}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-xl text-xs font-bold hover:bg-[#1e40af] transition-all shadow-lg disabled:opacity-50"
-                >
-                  {isSaving ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Save size={14} />} 
-                  Salva Dati
-                </button>
-              </div>
-              <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                      <Phone size={12} /> Telefono
-                    </label>
-                    <input 
-                      type="text" 
-                      value={localSettings.phone}
-                      onChange={(e) => setLocalSettings(prev => ({ ...prev, phone: e.target.value }))}
-                      className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                      <Mail size={12} /> Email
-                    </label>
-                    <input 
-                      type="email" 
-                      value={localSettings.email}
-                      onChange={(e) => setLocalSettings(prev => ({ ...prev, email: e.target.value }))}
-                      className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-                    />
-                  </div>
+            {activeSection === 'settings' && (
+              <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
+                  <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
+                    <SettingsIcon size={20} className="text-[#1e3a8a]" /> Dati di Contatto e Aziendali
+                  </h2>
+                  <button 
+                    onClick={handleSaveSettings}
+                    disabled={isSaving}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-xl text-xs font-bold hover:bg-[#1e40af] transition-all shadow-lg disabled:opacity-50"
+                  >
+                    {isSaving ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Save size={14} />} 
+                    Salva Dati
+                  </button>
                 </div>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                      <MapPin size={12} /> Indirizzo
-                    </label>
-                    <input 
-                      type="text" 
-                      value={localSettings.address}
-                      onChange={(e) => setLocalSettings(prev => ({ ...prev, address: e.target.value }))}
-                      className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Città</label>
-                    <input 
-                      type="text" 
-                      value={localSettings.city}
-                      onChange={(e) => setLocalSettings(prev => ({ ...prev, city: e.target.value }))}
-                      className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-                    />
-                  </div>
-                </div>
-                <div className="md:col-span-2 pt-4 border-t border-slate-100">
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                    <Video size={12} /> Video di Presentazione
-                  </label>
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-grow">
+                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                        <Phone size={12} /> Telefono
+                      </label>
                       <input 
                         type="text" 
-                        value={localSettings.presentationVideoUrl}
-                        onChange={(e) => setLocalSettings(prev => ({ ...prev, presentationVideoUrl: e.target.value }))}
-                        className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm mb-2"
-                        placeholder="URL video (YouTube o link diretto)..."
+                        value={localSettings.phone}
+                        onChange={(e) => setLocalSettings(prev => ({ ...prev, phone: e.target.value }))}
+                        className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
                       />
-                      <p className="text-[10px] text-slate-400 font-medium italic">
-                        Puoi incollare un link YouTube o caricare un file video dal tuo PC.
-                      </p>
                     </div>
-                    <label className="shrink-0 flex items-center justify-center gap-2 px-6 py-2 bg-blue-50 text-[#1e3a8a] rounded-xl font-bold text-xs cursor-pointer hover:bg-blue-100 transition-all border border-blue-100 h-fit">
-                      {uploadingKey === 'presentationVideo' ? (
-                        <div className="w-4 h-4 border-2 border-[#1e3a8a] border-t-transparent rounded-full animate-spin"></div>
-                      ) : (
-                        <Video size={16} />
-                      )}
-                      {uploadingKey === 'presentationVideo' ? 'Caricamento...' : 'Carica Video dal PC'}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                        <Mail size={12} /> Email
+                      </label>
                       <input 
-                        type="file" 
-                        accept="video/*"
-                        className="hidden" 
-                        onChange={handleVideoUpload}
-                        disabled={isSaving}
+                        type="email" 
+                        value={localSettings.email}
+                        onChange={(e) => setLocalSettings(prev => ({ ...prev, email: e.target.value }))}
+                        className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
                       />
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                        <MapPin size={12} /> Indirizzo
+                      </label>
+                      <input 
+                        type="text" 
+                        value={localSettings.address}
+                        onChange={(e) => setLocalSettings(prev => ({ ...prev, address: e.target.value }))}
+                        className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Città</label>
+                      <input 
+                        type="text" 
+                        value={localSettings.city}
+                        onChange={(e) => setLocalSettings(prev => ({ ...prev, city: e.target.value }))}
+                        className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div className="md:col-span-2 pt-4 border-t border-slate-100">
+                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                      <Video size={12} /> Video di Presentazione
                     </label>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <div className="flex-grow">
+                        <input 
+                          type="text" 
+                          value={localSettings.presentationVideoUrl}
+                          onChange={(e) => setLocalSettings(prev => ({ ...prev, presentationVideoUrl: e.target.value }))}
+                          className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm mb-2"
+                          placeholder="URL video (YouTube o link diretto)..."
+                        />
+                        <p className="text-[10px] text-slate-400 font-medium italic">
+                          Puoi incollare un link YouTube o caricare un file video dal tuo PC.
+                        </p>
+                      </div>
+                      <label className="shrink-0 flex items-center justify-center gap-2 px-6 py-2 bg-blue-50 text-[#1e3a8a] rounded-xl font-bold text-xs cursor-pointer hover:bg-blue-100 transition-all border border-blue-100 h-fit">
+                        {uploadingKey === 'presentationVideo' ? (
+                          <div className="w-4 h-4 border-2 border-[#1e3a8a] border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                          <Video size={16} />
+                        )}
+                        {uploadingKey === 'presentationVideo' ? 'Caricamento...' : 'Carica Video dal PC'}
+                        <input 
+                          type="file" 
+                          accept="video/*"
+                          className="hidden" 
+                          onChange={handleVideoUpload}
+                          disabled={isSaving}
+                        />
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             {/* Password Change Section (only for email users) */}
-            {isEmailUser && (
-              <section id="security" className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden scroll-mt-24">
+            {activeSection === 'security' && isEmailUser && (
+              <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
                   <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
                     <Key size={20} className="text-[#1e3a8a]" /> Sicurezza Account
@@ -587,150 +582,148 @@ const Admin = () => {
             )}
 
             {/* Image Management Section */}
-            <section id="images" className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden scroll-mt-24">
-              <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
-                  <ImageIcon size={20} className="text-[#1e3a8a]" /> Gestione Tutte le Foto
-                </h2>
-                <button 
-                  onClick={() => { if(window.confirm('Vuoi davvero resettare tutte le immagini ai valori predefiniti?')) resetImages(); }}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-white text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-50 transition-all border border-slate-200"
-                >
-                  <RotateCcw size={14} /> Reset Immagini
-                </button>
-              </div>
-              <div className="p-6 space-y-8">
-                {/* Home Images */}
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div> Home Page
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {Object.entries(images.home).map(([key, url]) => (
-                      <div key={key} className="space-y-3">
-                        <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
-                        <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
-                          <img src={url} alt={key} className="w-full h-full object-cover" />
-                          <div className={`absolute inset-0 bg-black/40 transition-all flex items-center justify-center ${uploadingKey === `home_${key}` ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                            {uploadingKey === `home_${key}` ? (
-                              <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-                            ) : (
-                              <label className="p-3 bg-white text-[#1e3a8a] rounded-full cursor-pointer hover:scale-110 transition-all shadow-xl">
-                                <Upload size={20} />
-                                <input 
-                                  type="file" 
-                                  accept="image/*"
-                                  className="hidden" 
-                                  onChange={(e) => handleFileUpload('home', key, e)}
-                                />
-                              </label>
-                            )}
-                          </div>
-                        </div>
-                        <input 
-                          type="text" 
-                          value={url}
-                          onChange={(e) => updateImage('home', key, e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none"
-                          placeholder="URL immagine..."
-                        />
-                      </div>
-                    ))}
-                  </div>
+            {activeSection === 'images' && (
+              <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
+                  <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
+                    <ImageIcon size={20} className="text-[#1e3a8a]" /> Gestione Tutte le Foto
+                  </h2>
+                  <button 
+                    onClick={() => { if(window.confirm('Vuoi davvero resettare tutte le immagini ai valori predefiniti?')) resetImages(); }}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-white text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-50 transition-all border border-slate-200"
+                  >
+                    <RotateCcw size={14} /> Reset Immagini
+                  </button>
                 </div>
+                <div className="p-6 space-y-8">
+                  {/* Home Images */}
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div> Home Page
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {Object.entries(images.home).map(([key, url]) => (
+                        <div key={key} className="space-y-3">
+                          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
+                          <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
+                            <img src={url} alt={key} className="w-full h-full object-cover" />
+                            <div className={`absolute inset-0 bg-black/40 transition-all flex items-center justify-center ${uploadingKey === `home_${key}` ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                              {uploadingKey === `home_${key}` ? (
+                                <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                              ) : (
+                                <label className="p-3 bg-white text-[#1e3a8a] rounded-full cursor-pointer hover:scale-110 transition-all shadow-xl">
+                                  <Upload size={20} />
+                                  <input 
+                                    type="file" 
+                                    accept="image/*"
+                                    className="hidden" 
+                                    onChange={(e) => handleFileUpload('home', key, e)}
+                                  />
+                                </label>
+                              )}
+                            </div>
+                          </div>
+                          <input 
+                            type="text" 
+                            value={url}
+                            onChange={(e) => updateImage('home', key, e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none"
+                            placeholder="URL immagine..."
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-                {/* Blog Images */}
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-600"></div> Immagini Blog (Default)
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    {Object.entries(images.blog).map(([key, url]) => (
-                      <div key={key} className="space-y-3">
-                        <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
-                        <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
-                          <img src={url} alt={key} className="w-full h-full object-cover" />
-                          <div className={`absolute inset-0 bg-black/40 transition-all flex items-center justify-center ${uploadingKey === `blog_${key}` ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                            {uploadingKey === `blog_${key}` ? (
-                              <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
-                            ) : (
-                              <label className="p-2 bg-white text-[#1e3a8a] rounded-full cursor-pointer hover:scale-110 transition-all shadow-xl">
-                                <Upload size={16} />
-                                <input 
-                                  type="file" 
-                                  accept="image/*"
-                                  className="hidden" 
-                                  onChange={(e) => handleFileUpload('blog', key, e)}
-                                />
-                              </label>
-                            )}
+                  {/* Blog Images */}
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-600"></div> Immagini Blog (Default)
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                      {Object.entries(images.blog).map(([key, url]) => (
+                        <div key={key} className="space-y-3">
+                          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
+                          <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
+                            <img src={url} alt={key} className="w-full h-full object-cover" />
+                            <div className={`absolute inset-0 bg-black/40 transition-all flex items-center justify-center ${uploadingKey === `blog_${key}` ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                              {uploadingKey === `blog_${key}` ? (
+                                <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                              ) : (
+                                <label className="p-2 bg-white text-[#1e3a8a] rounded-full cursor-pointer hover:scale-110 transition-all shadow-xl">
+                                  <Upload size={16} />
+                                  <input 
+                                    type="file" 
+                                    accept="image/*"
+                                    className="hidden" 
+                                    onChange={(e) => handleFileUpload('blog', key, e)}
+                                  />
+                                </label>
+                              )}
+                            </div>
                           </div>
+                          <input 
+                            type="text" 
+                            value={url}
+                            onChange={(e) => updateImage('blog', key, e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none"
+                            placeholder="URL immagine..."
+                          />
                         </div>
-                        <input 
-                          type="text" 
-                          value={url}
-                          onChange={(e) => updateImage('blog', key, e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none"
-                          placeholder="URL immagine..."
-                        />
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             {/* Blog Section */}
-            <section id="blog" className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden scroll-mt-24">
-              <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
-                  <FileText size={20} className="text-[#1e3a8a]" /> Gestione Blog
-                </h2>
-                <button 
-                  onClick={openNewPost}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-[#1e3a8a] rounded-lg text-xs font-bold hover:bg-blue-100 transition-all border border-blue-100"
-                >
-                  <Plus size={14} /> Nuovo Articolo
-                </button>
-              </div>
-              <div className="p-6">
-                <div className="grid grid-cols-1 gap-4">
-                  {posts.map((post) => (
-                    <div key={post.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:bg-slate-50 transition-all group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-16 h-12 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-                          <img src={post.image} alt="" className="w-full h-full object-cover" />
-                        </div>
-                        <div>
-                          <h3 className="text-sm font-bold text-slate-900 line-clamp-1">{post.title}</h3>
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{post.category} • {post.date}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                        <button 
-                          onClick={() => openEditPost(post)}
-                          className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
-                        >
-                          <Edit2 size={16} />
-                        </button>
-                        <button 
-                          onClick={() => deletePost(post.id)}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+            {activeSection === 'blog' && (
+              <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
+                  <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 tracking-tight">
+                    <FileText size={20} className="text-[#1e3a8a]" /> Gestione Blog
+                  </h2>
+                  <button 
+                    onClick={openNewPost}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-[#1e3a8a] rounded-lg text-xs font-bold hover:bg-blue-100 transition-all border border-blue-100"
+                  >
+                    <Plus size={14} /> Nuovo Articolo
+                  </button>
                 </div>
-              </div>
-            </section>
-
-            <div className="p-8 bg-[#1e3a8a] rounded-3xl text-center text-white shadow-xl">
-              <Sparkles className="mx-auto mb-4 text-blue-300" size={32} />
-              <h3 className="text-xl font-bold mb-2">Tutto sotto controllo</h3>
-              <p className="text-blue-100 text-sm max-w-md mx-auto">Tutte le modifiche apportate in questo pannello vengono salvate istantaneamente e sono visibili sul sito pubblico.</p>
-            </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 gap-4">
+                    {posts.map((post) => (
+                      <div key={post.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:bg-slate-50 transition-all group">
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-12 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                            <img src={post.image} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <div>
+                            <h3 className="text-sm font-bold text-slate-900 line-clamp-1">{post.title}</h3>
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{post.category} • {post.date}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                          <button 
+                            onClick={() => openEditPost(post)}
+                            className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                          >
+                            <Edit2 size={16} />
+                          </button>
+                          <button 
+                            onClick={() => deletePost(post.id)}
+                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            )}
 
             <div className="mt-12 p-6 bg-blue-50 rounded-2xl border border-blue-100 text-center">
               <p className="text-sm font-bold text-[#1e3a8a] mb-2 tracking-tight">Tutte le modifiche sono ora salvate in tempo reale nel database Firebase.</p>
