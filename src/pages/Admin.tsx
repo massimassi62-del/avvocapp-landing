@@ -136,7 +136,7 @@ const Admin = () => {
         setStatusMessage({ text: 'Immagine caricata con successo!', type: 'success' });
       } catch (err: any) {
         console.error(err);
-        setStatusMessage({ text: `Errore durante il caricamento: ${err.message}`, type: 'error' });
+        setStatusMessage({ text: `Errore durante il caricamento: ${err.message || 'Errore sconosciuto'}`, type: 'error' });
       } finally {
         setIsSaving(false);
         setUploadingKey(null);
@@ -615,7 +615,7 @@ const Admin = () => {
                         <div key={key} className="space-y-3">
                           <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
                           <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
-                            <img src={encodeURI(url)} alt={key} className="w-full h-full object-cover" />
+                            <img src={url} alt={key} className="w-full h-full object-cover" />
                             <div className={`absolute inset-0 bg-black/40 transition-all flex items-center justify-center ${uploadingKey === `home_${key}` ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                               {uploadingKey === `home_${key}` ? (
                                 <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -654,7 +654,7 @@ const Admin = () => {
                         <div key={key} className="space-y-3">
                           <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
                           <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
-                            <img src={encodeURI(url)} alt={key} className="w-full h-full object-cover" />
+                            <img src={url} alt={key} className="w-full h-full object-cover" />
                             <div className={`absolute inset-0 bg-black/40 transition-all flex items-center justify-center ${uploadingKey === `blog_${key}` ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                               {uploadingKey === `blog_${key}` ? (
                                 <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -706,7 +706,7 @@ const Admin = () => {
                       <div key={post.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:bg-slate-50 transition-all group">
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-12 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-                            <img src={encodeURI(post.image)} alt="" className="w-full h-full object-cover" />
+                            <img src={post.image} alt="" className="w-full h-full object-cover" />
                           </div>
                           <div>
                             <h3 className="text-sm font-bold text-slate-900 line-clamp-1">{post.title}</h3>

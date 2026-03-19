@@ -159,7 +159,7 @@ const Home = () => {
               <div className="rounded-2xl border border-white/20 shadow-2xl overflow-hidden bg-white/5 backdrop-blur-md p-2">
                 <div className="rounded-xl overflow-hidden border border-white/10">
                   <img 
-                    src={encodeURI(images.home.dashboard)} 
+                    src={images.home.dashboard} 
                     alt="AvvocApp Dashboard" 
                     className="w-full h-auto"
                     onError={(e) => {
@@ -501,7 +501,7 @@ const Home = () => {
                   <div className="flex-1 w-full">
                     <div className="rounded-xl border border-slate-200 shadow-xl overflow-hidden bg-white group">
                       <img 
-                        src={encodeURI(feature.img)} 
+                        src={feature.img} 
                         alt={feature.title} 
                         className="w-full h-auto group-hover:scale-105 transition-transform duration-700 max-h-[300px] object-cover" 
                         referrerPolicy="no-referrer"

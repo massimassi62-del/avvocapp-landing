@@ -49,7 +49,7 @@ const Blog = () => {
               >
                 <div className="relative h-48 overflow-hidden">
                   <img 
-                    src={encodeURI(post.image)} 
+                    src={post.image} 
                     alt={post.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     referrerPolicy="no-referrer"
