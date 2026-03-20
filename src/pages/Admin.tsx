@@ -158,8 +158,18 @@ const Admin = () => {
         }
         setStatusMessage({ text: 'Immagine caricata con successo!', type: 'success' });
       } catch (err: any) {
-        console.error(err);
-        setStatusMessage({ text: `Errore durante il caricamento: ${err.message || 'Errore sconosciuto'}`, type: 'error' });
+        console.error("Upload error details:", err);
+        let errorMsg = "Errore durante il caricamento.";
+        if (err.code === 'storage/unauthorized') {
+          errorMsg = "Permesso negato. Verifica le regole di sicurezza di Firebase Storage.";
+        } else if (err.code === 'storage/canceled') {
+          errorMsg = "Caricamento annullato.";
+        } else if (err.code === 'storage/unknown') {
+          errorMsg = "Errore sconosciuto di Storage. Verifica che il bucket sia attivo nel console Firebase.";
+        } else if (err.message) {
+          errorMsg = `Errore: ${err.message}`;
+        }
+        setStatusMessage({ text: errorMsg, type: 'error' });
       } finally {
         setIsSaving(false);
         setUploadingKey(null);
@@ -178,8 +188,16 @@ const Admin = () => {
         setLocalSettings(prev => ({ ...prev, presentationVideoUrl: downloadUrl }));
         setStatusMessage({ text: 'Video caricato con successo! Ricorda di salvare le impostazioni.', type: 'success' });
       } catch (err: any) {
-        console.error(err);
-        setStatusMessage({ text: `Errore durante il caricamento del video: ${err.message}`, type: 'error' });
+        console.error("Video upload error details:", err);
+        let errorMsg = "Errore durante il caricamento del video.";
+        if (err.code === 'storage/unauthorized') {
+          errorMsg = "Permesso negato. Verifica le regole di sicurezza di Firebase Storage.";
+        } else if (err.code === 'storage/unknown') {
+          errorMsg = "Errore sconosciuto di Storage. Verifica che il bucket sia attivo nel console Firebase.";
+        } else if (err.message) {
+          errorMsg = `Errore: ${err.message}`;
+        }
+        setStatusMessage({ text: errorMsg, type: 'error' });
       } finally {
         setIsSaving(false);
         setUploadingKey(null);
