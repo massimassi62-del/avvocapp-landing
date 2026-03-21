@@ -675,7 +675,8 @@ const Admin = () => {
                             {key === 'dashboard' ? 'Dashboard Hero' : 
                              key === 'featurePratiche' ? 'Feature: Gestione Pratiche' :
                              key === 'featureParcelle' ? 'Feature: Calcolo Parcelle' :
-                             key === 'featureReport' ? 'Feature: Analisi Report' : key}
+                             key === 'featureReport' ? 'Feature: Analisi Report' : 
+                             key === 'featureClientPortal' ? 'Feature: Portale Clienti' : key}
                           </label>
                           <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
                             <img src={url} alt={key} className="w-full h-full object-cover" />

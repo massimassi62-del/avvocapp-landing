@@ -8,6 +8,7 @@ interface ImageConfig {
     featurePratiche: string;
     featureParcelle: string;
     featureReport: string;
+    featureClientPortal: string;
   };
   blog: {
     default: string;
@@ -20,6 +21,7 @@ const DEFAULT_IMAGES: ImageConfig = {
     featurePratiche: "/pratiche.png",
     featureParcelle: "/calcola parcella.png",
     featureReport: "/report andamento studio.png",
+    featureClientPortal: "https://picsum.photos/seed/client-portal/1200/800",
   },
   blog: {
     default: "https://picsum.photos/seed/legal/800/600",

@@ -16,6 +16,7 @@ import {
   TrendingUp,
   Clock,
   Users,
+  Lock,
   Folder,
   Calendar,
   Briefcase,
@@ -481,6 +482,34 @@ const Home = () => {
                     icon: <Compass className="text-blue-600" size={18} />,
                     title: "Indicatori Strategici",
                     text: "Evidenzia tendenze e redditività per prendere decisioni informate e pianificare la crescita."
+                  }
+                ]
+              },
+              {
+                title: "Portale Clienti Trasparente",
+                desc: "Offri ai tuoi clienti un'esperienza di trasparenza assoluta. Con il Portale Clienti di AvvocApp, i tuoi assistiti possono visualizzare lo stato delle loro pratiche in tempo reale, scaricare documenti autorizzati e ricevere aggiornamenti diretti, tutto sotto il tuo controllo totale.",
+                img: images.home.featureClientPortal,
+                reverse: true,
+                details: [
+                  {
+                    icon: <Users className="text-blue-600" size={18} />,
+                    title: "Accesso Controllato",
+                    text: "Decidi tu quali clienti possono accedere e quali pratiche possono visualizzare."
+                  },
+                  {
+                    icon: <Lock className="text-blue-600" size={18} />,
+                    title: "Blocco Istantaneo",
+                    text: "Puoi revocare l'accesso a un cliente o a una singola pratica in qualsiasi momento con un click."
+                  },
+                  {
+                    icon: <MessageCircle className="text-blue-600" size={18} />,
+                    title: "Messaggi Personalizzati",
+                    text: "Invia avvisi e comunicazioni personalizzate direttamente sul portale del cliente."
+                  },
+                  {
+                    icon: <ShieldCheck className="text-blue-600" size={18} />,
+                    title: "Privacy Garantita",
+                    text: "Ogni cliente vede solo ed esclusivamente i propri dati, in totale conformità al GDPR."
                   }
                 ]
               }
