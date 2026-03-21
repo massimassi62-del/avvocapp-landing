@@ -165,7 +165,7 @@ const Home = () => {
                     alt="AvvocApp Dashboard" 
                     className="w-full h-auto"
                     onError={(e) => {
-                      e.currentTarget.src = "https://picsum.photos/seed/legal-software-ui/1600/900";
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1600&h=900";
                     }}
                     referrerPolicy="no-referrer"
                   />
@@ -536,7 +536,7 @@ const Home = () => {
                         className="w-full h-auto group-hover:scale-105 transition-transform duration-700 max-h-[300px] object-cover" 
                         referrerPolicy="no-referrer"
                         onError={(e) => {
-                          e.currentTarget.src = `https://picsum.photos/seed/${feature.img.replace(/\s/g, '-')}/1200/800`;
+                          e.currentTarget.src = "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1200&h=800";
                         }}
                       />
                     </div>

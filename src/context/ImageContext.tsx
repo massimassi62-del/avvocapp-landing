@@ -17,14 +17,14 @@ interface ImageConfig {
 
 const DEFAULT_IMAGES: ImageConfig = {
   home: {
-    dashboard: "/dashboard.png",
-    featurePratiche: "/pratiche.png",
-    featureParcelle: "/calcola parcella.png",
-    featureReport: "/report andamento studio.png",
-    featureClientPortal: "https://picsum.photos/seed/client-portal/1200/800",
+    dashboard: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1600&h=900",
+    featurePratiche: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1200&h=800",
+    featureParcelle: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1200&h=800",
+    featureReport: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200&h=800",
+    featureClientPortal: "https://images.unsplash.com/photo-1521791136064-7986c2959213?auto=format&fit=crop&q=80&w=1200&h=800",
   },
   blog: {
-    default: "https://picsum.photos/seed/legal/800/600",
+    default: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=800&h=600",
   }
 };
 
