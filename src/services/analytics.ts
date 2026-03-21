@@ -42,20 +42,37 @@ const startFirestoreSession = async () => {
   
   try {
     const sessionDoc = await getDoc(sessionRef);
+    const isReturningUser = localStorage.getItem("avvocapp_returning_user") === "true";
+    
     if (!sessionDoc.exists()) {
+      // Document doesn't exist at all
       await setDoc(sessionRef, {
         id: sessionId,
         visitorId,
         startTime: serverTimestamp(),
         lastActive: serverTimestamp(),
         userAgent: navigator.userAgent,
-        isNewUser: !localStorage.getItem("avvocapp_returning_user"),
+        isNewUser: !isReturningUser,
       });
-      localStorage.setItem("avvocapp_returning_user", "true");
+      if (!isReturningUser) localStorage.setItem("avvocapp_returning_user", "true");
     } else {
-      await updateDoc(sessionRef, {
+      // Document exists (might be a partial from trackPageView)
+      const data = sessionDoc.data();
+      const updateData: any = {
         lastActive: serverTimestamp()
-      });
+      };
+      
+      // If it's a partial document (missing metadata), add it
+      if (!data.startTime) {
+        updateData.startTime = serverTimestamp();
+        updateData.id = sessionId;
+        updateData.visitorId = visitorId;
+        updateData.userAgent = navigator.userAgent;
+        updateData.isNewUser = !isReturningUser;
+        if (!isReturningUser) localStorage.setItem("avvocapp_returning_user", "true");
+      }
+      
+      await updateDoc(sessionRef, updateData);
     }
   } catch (err) {
     console.error("Error starting analytics session:", err);
@@ -80,7 +97,7 @@ export const trackPageView = async (path: string) => {
     
     // Update session heartbeat
     const sessionRef = doc(db, "analytics_sessions", sessionId);
-    await updateDoc(sessionRef, { lastActive: serverTimestamp() });
+    await setDoc(sessionRef, { lastActive: serverTimestamp() }, { merge: true });
   } catch (err) {
     console.error("Error tracking page view:", err);
   }
@@ -110,7 +127,7 @@ export const trackEvent = async (category: string, action: string, label?: strin
     
     // Update session heartbeat
     const sessionRef = doc(db, "analytics_sessions", sessionId);
-    await updateDoc(sessionRef, { lastActive: serverTimestamp() });
+    await setDoc(sessionRef, { lastActive: serverTimestamp() }, { merge: true });
   } catch (err) {
     console.error("Error tracking event:", err);
   }
