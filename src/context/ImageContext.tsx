@@ -5,22 +5,24 @@ import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 interface ImageConfig {
   home: {
     dashboard: string;
+    featurePratiche: string;
+    featureParcelle: string;
+    featureReport: string;
   };
   blog: {
-    post1: string;
-    post2: string;
-    post3: string;
+    default: string;
   };
 }
 
 const DEFAULT_IMAGES: ImageConfig = {
   home: {
     dashboard: "/dashboard.png",
+    featurePratiche: "/pratiche.png",
+    featureParcelle: "/calcola parcella.png",
+    featureReport: "/report andamento studio.png",
   },
   blog: {
-    post1: "/pratiche.png",
-    post2: "/calcola parcella.png",
-    post3: "/report andamento studio.png",
+    default: "https://picsum.photos/seed/legal/800/600",
   }
 };
 

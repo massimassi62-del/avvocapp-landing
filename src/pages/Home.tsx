@@ -403,7 +403,7 @@ const Home = () => {
               {
                 title: "Gestione Pratiche Evoluta",
                 desc: "La gestione delle pratiche in AvvocApp è pensata come un flusso ordinato, automatico e completamente tracciabile, così che ogni fascicolo diventi un “contenitore intelligente” capace di organizzare documenti, attività, scadenze e collaborazioni senza richiedere interventi manuali superflui.",
-                img: "/pratiche.png",
+                img: images.home.featurePratiche,
                 reverse: false,
                 details: [
                   {
@@ -431,7 +431,7 @@ const Home = () => {
               {
                 title: "Calcolo Parcelle e Tributi",
                 desc: "La gestione della parcella in AvvocApp è costruita con la stessa eleganza, precisione e trasparenza che caratterizzano l’intero ecosistema dello studio: ogni attività svolta si traduce in un valore chiaro, documentato e immediatamente fatturabile, senza calcoli manuali o rischi di errore.",
-                img: "/calcola parcella.png",
+                img: images.home.featureParcelle,
                 reverse: true,
                 details: [
                   {
@@ -459,7 +459,7 @@ const Home = () => {
               {
                 title: "Analisi e Reportistica",
                 desc: "L’area Analisi e Reportistica di AvvocApp offre una visione chiara, strutturata e immediatamente utilizzabile dell’intera attività dello studio, trasformando dati complessi in informazioni leggibili, comparabili e utili alle decisioni strategiche.",
-                img: "/report andamento studio.png",
+                img: images.home.featureReport,
                 reverse: false,
                 details: [
                   {

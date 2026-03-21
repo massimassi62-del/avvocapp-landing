@@ -666,12 +666,17 @@ const Admin = () => {
                   {/* Home Images */}
                   <div>
                     <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div> Home Page
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div> Home Page (Hero & Features)
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {Object.entries(images.home).map(([key, url]) => (
                         <div key={key} className="space-y-3">
-                          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
+                          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                            {key === 'dashboard' ? 'Dashboard Hero' : 
+                             key === 'featurePratiche' ? 'Feature: Gestione Pratiche' :
+                             key === 'featureParcelle' ? 'Feature: Calcolo Parcelle' :
+                             key === 'featureReport' ? 'Feature: Analisi Report' : key}
+                          </label>
                           <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
                             <img src={url} alt={key} className="w-full h-full object-cover" />
                             <div className={`absolute inset-0 bg-black/40 transition-all flex items-center justify-center ${uploadingKey === `home_${key}` ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
@@ -705,12 +710,12 @@ const Admin = () => {
                   {/* Blog Images */}
                   <div>
                     <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-600"></div> Immagini Blog (Default)
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-600"></div> Blog (Immagine Predefinita)
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                       {Object.entries(images.blog).map(([key, url]) => (
                         <div key={key} className="space-y-3">
-                          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{key}</label>
+                          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Immagine di Default</label>
                           <div className="aspect-video rounded-xl border border-slate-200 overflow-hidden bg-slate-100 mb-3 relative group">
                             <img src={url} alt={key} className="w-full h-full object-cover" />
                             <div className={`absolute inset-0 bg-black/40 transition-all flex items-center justify-center ${uploadingKey === `blog_${key}` ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
