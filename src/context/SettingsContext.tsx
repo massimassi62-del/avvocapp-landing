@@ -108,7 +108,15 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const path = 'settings/global';
     const unsubscribe = onSnapshot(doc(db, path), (snapshot) => {
       if (snapshot.exists()) {
-        setSettings(snapshot.data() as SiteSettings);
+        const data = snapshot.data();
+        setSettings({
+          ...DEFAULT_SETTINGS,
+          ...data,
+          pricing: {
+            ...DEFAULT_SETTINGS.pricing,
+            ...(data.pricing || {})
+          }
+        });
       } else {
         // If it doesn't exist, initialize with defaults
         setDoc(doc(db, path), DEFAULT_SETTINGS).catch(err => {
