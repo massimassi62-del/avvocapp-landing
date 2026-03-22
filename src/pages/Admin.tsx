@@ -605,6 +605,51 @@ const Admin = () => {
                       </label>
                     </div>
                   </div>
+
+                  {/* Pricing Settings */}
+                  <div className="md:col-span-2 pt-4 border-t border-slate-100">
+                    <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div> Piani e Prezzi (€/mese)
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Piano Base</label>
+                        <input 
+                          type="number" 
+                          value={localSettings.pricing.base}
+                          onChange={(e) => setLocalSettings(prev => ({ 
+                            ...prev, 
+                            pricing: { ...prev.pricing, base: parseFloat(e.target.value) || 0 } 
+                          }))}
+                          className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Piano Pro</label>
+                        <input 
+                          type="number" 
+                          value={localSettings.pricing.pro}
+                          onChange={(e) => setLocalSettings(prev => ({ 
+                            ...prev, 
+                            pricing: { ...prev.pricing, pro: parseFloat(e.target.value) || 0 } 
+                          }))}
+                          className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Piano Premium</label>
+                        <input 
+                          type="number" 
+                          value={localSettings.pricing.enterprise}
+                          onChange={(e) => setLocalSettings(prev => ({ 
+                            ...prev, 
+                            pricing: { ...prev.pricing, enterprise: parseFloat(e.target.value) || 0 } 
+                          }))}
+                          className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </section>
             )}

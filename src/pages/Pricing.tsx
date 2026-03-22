@@ -23,8 +23,10 @@ import {
   X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSettings } from '../context/SettingsContext';
 
 const Pricing = () => {
+  const { settings } = useSettings();
   const [hoursSaved, setHoursSaved] = useState(10);
   const [hourlyRate, setHourlyRate] = useState(150);
 
@@ -100,7 +102,7 @@ const Pricing = () => {
             {[
               { 
                 name: 'Piano Base', 
-                price: '30,00', 
+                price: settings.pricing.base.toFixed(2).replace('.', ','), 
                 desc: 'Ideale per chi preferisce il controllo locale',
                 footer: 'Salvataggio solo in locale',
                 icon: <Folder size={24} className="text-slate-900" />,
@@ -119,7 +121,7 @@ const Pricing = () => {
               },
               { 
                 name: 'Piano Pro', 
-                price: '60,00', 
+                price: settings.pricing.pro.toFixed(2).replace('.', ','), 
                 desc: 'La soluzione cloud completa per lo studio moderno',
                 popular: true, 
                 footer: 'Accesso cloud multi-dispositivo',
@@ -142,7 +144,7 @@ const Pricing = () => {
               },
               { 
                 name: 'Piano Premium', 
-                price: '120,00', 
+                price: settings.pricing.enterprise.toFixed(2).replace('.', ','), 
                 desc: 'Per studi che richiedono il massimo delle prestazioni',
                 footer: 'Tutto incluso, senza compromessi',
                 icon: <Star size={24} className="text-slate-900" />,
@@ -229,7 +231,7 @@ const Pricing = () => {
                     { label: 'Business Intelligence', base: false, pro: 'Base', premium: 'Avanzata' },
                     { label: 'Limiti storage elevati', base: false, pro: true, premium: 'Estesi' },
                     { label: 'Priorità elaborazione', base: false, pro: false, premium: true },
-                    { label: 'Prezzo', base: '30€', pro: '60€', premium: '120€' },
+                    { label: 'Prezzo', base: `${settings.pricing.base}€`, pro: `${settings.pricing.pro}€`, premium: `${settings.pricing.enterprise}€` },
                   ].map((row, idx) => (
                     <tr key={idx} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} border-b border-slate-100 last:border-0`}>
                       <td className="p-6 font-medium text-slate-700">{row.label}</td>

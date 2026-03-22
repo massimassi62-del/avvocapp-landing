@@ -28,7 +28,6 @@ import {
   Play
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useImages } from '../context/ImageContext';
 import { useSettings } from '../context/SettingsContext';
 import { Helmet } from 'react-helmet-async';
 import { trackEvent } from '../services/analytics';
@@ -59,7 +58,6 @@ const Counter = ({ value, duration = 2 }: { value: string, duration?: number }) 
 };
 
 const Home = () => {
-  const { images } = useImages();
   const { settings } = useSettings();
   return (
     <div className="overflow-hidden bg-white">
@@ -68,7 +66,6 @@ const Home = () => {
         <meta name="description" content="Automatizza le scadenze, redigi atti con l'IA e gestisci la contabilità del tuo studio legale con AvvocApp. Il gestionale moderno per avvocati." />
         <meta property="og:title" content="AvvocApp - Il Gestionale Intelligente per lo Studio Legale Moderno" />
         <meta property="og:description" content="Automatizza le scadenze, redigi atti con l'IA e gestisci la contabilità del tuo studio legale con AvvocApp." />
-        <meta property="og:image" content={images.home.dashboard} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="canonical" href={window.location.origin} />
@@ -82,112 +79,70 @@ const Home = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-left max-w-2xl">
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-bold uppercase tracking-wider mb-6 border border-white/20 backdrop-blur-sm"
-              >
-                <Sparkles size={14} className="text-blue-300" />
-                Potenziato da Gemini 1.5 Pro
-              </motion.div>
-              
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-4xl lg:text-6xl font-bold tracking-tight leading-tight mb-6"
-              >
-                La gestione del tuo studio legale, <span className="text-blue-300">semplificata.</span>
-              </motion.h1>
-
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-lg lg:text-xl text-blue-100 mb-8 leading-relaxed"
-              >
-                Pratiche, clienti, scadenze e documenti in un'unica piattaforma pensata per professionisti del diritto italiano.
-              </motion.p>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="flex flex-wrap gap-4 mb-10"
-              >
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
-                  <Users size={18} className="text-blue-300" />
-                  <span className="text-sm font-medium">Multi-utente</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
-                  <ShieldCheck size={18} className="text-blue-300" />
-                  <span className="text-sm font-medium">Conforme GDPR</span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
-                <Link 
-                  to="/admin" 
-                  className="px-8 py-4 bg-white text-[#1e3a8a] rounded-xl font-bold text-lg hover:bg-blue-50 transition-all shadow-xl shadow-black/20 flex items-center justify-center gap-2 group"
-                >
-                  Prova ora gratis
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <a 
-                  href="#video" 
-                  className="px-8 py-4 bg-transparent border-2 border-white/30 text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
-                >
-                  Guarda demo
-                  <Zap size={20} className="text-blue-300" />
-                </a>
-              </motion.div>
-            </div>
-
-            {/* Dashboard Preview */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="relative"
+          <div className="text-center max-w-3xl mx-auto">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-bold uppercase tracking-wider mb-6 border border-white/20 backdrop-blur-sm"
             >
-              <div className="absolute -inset-4 bg-blue-400/20 blur-3xl rounded-[2rem] -z-10" />
-              <div className="rounded-2xl border border-white/20 shadow-2xl overflow-hidden bg-white/5 backdrop-blur-md p-2">
-                <div className="rounded-xl overflow-hidden border border-white/10">
-                  <img 
-                    src={images.home.dashboard} 
-                    alt="AvvocApp Dashboard" 
-                    className="w-full h-auto"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1600&h=900";
-                    }}
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
+              <Sparkles size={14} className="text-blue-300" />
+              Potenziato da Gemini 1.5 Pro
+            </motion.div>
+            
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl lg:text-6xl font-bold tracking-tight leading-tight mb-6"
+            >
+              La gestione del tuo studio legale, <span className="text-blue-300">semplificata.</span>
+            </motion.h1>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-lg lg:text-xl text-blue-100 mb-8 leading-relaxed"
+            >
+              Pratiche, clienti, scadenze e documenti in un'unica piattaforma pensata per professionisti del diritto italiano.
+            </motion.p>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-wrap gap-4 mb-10 justify-center"
+            >
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
+                <Users size={18} className="text-blue-300" />
+                <span className="text-sm font-medium">Multi-utente</span>
               </div>
-              
-              {/* Floating elements */}
-              <motion.div 
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-6 bg-white p-4 rounded-xl shadow-xl border border-slate-100 hidden lg:block"
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
+                <ShieldCheck size={18} className="text-blue-300" />
+                <span className="text-sm font-medium">Conforme GDPR</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Link 
+                to="/admin" 
+                className="px-8 py-4 bg-white text-[#1e3a8a] rounded-xl font-bold text-lg hover:bg-blue-50 transition-all shadow-xl shadow-black/20 flex items-center justify-center gap-2 group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
-                    <TrendingUp size={20} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Efficienza</p>
-                    <p className="text-sm font-bold text-slate-900">+45% Risparmio tempo</p>
-                  </div>
-                </div>
-              </motion.div>
+                Prova ora gratis
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <a 
+                href="#video" 
+                className="px-8 py-4 bg-transparent border-2 border-white/30 text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+              >
+                Guarda demo
+                <Zap size={20} className="text-blue-300" />
+              </a>
             </motion.div>
           </div>
         </div>
@@ -258,7 +213,6 @@ const Home = () => {
                 className="w-full h-full object-cover"
                 src={settings.presentationVideoUrl}
                 controls
-                poster={images.home.dashboard}
               >
                 Il tuo browser non supporta il tag video.
               </video>
@@ -292,9 +246,6 @@ const Home = () => {
                 <p className="text-slate-600 font-medium leading-relaxed mb-8 max-w-md">
                   Redigi atti, sintetizza fascicoli e analizza giurisprudenza in pochi secondi grazie all'integrazione nativa con Gemini 1.5 Pro.
                 </p>
-              </div>
-              <div className="relative z-10 rounded-2xl border border-slate-100 shadow-2xl overflow-hidden bg-slate-50">
-                <img src="https://picsum.photos/seed/ai-legal/1200/600" alt="IA Legale" className="w-full h-auto" />
               </div>
             </motion.div>
 
@@ -335,15 +286,15 @@ const Home = () => {
                   Accedi alle tue pratiche da qualsiasi dispositivo, ovunque tu sia. Il tuo studio è sempre con te.
                 </p>
               </div>
-              <div className="mt-6 flex -space-x-2">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 overflow-hidden">
-                    <img src={`https://i.pravatar.cc/150?u=${i}`} alt="User" />
-                  </div>
-                ))}
-                <div className="w-8 h-8 rounded-full border-2 border-white bg-blue-50 flex items-center justify-center text-[10px] font-bold text-[#1e3a8a]">
-                  +12
+              <div className="mt-6 flex items-center gap-2">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center">
+                      <Users size={12} className="text-slate-400" />
+                    </div>
+                  ))}
                 </div>
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">+12 Collaboratori</div>
               </div>
             </motion.div>
 
@@ -404,7 +355,6 @@ const Home = () => {
               {
                 title: "Gestione Pratiche Evoluta",
                 desc: "La gestione delle pratiche in AvvocApp è pensata come un flusso ordinato, automatico e completamente tracciabile, così che ogni fascicolo diventi un “contenitore intelligente” capace di organizzare documenti, attività, scadenze e collaborazioni senza richiedere interventi manuali superflui.",
-                img: images.home.featurePratiche,
                 reverse: false,
                 details: [
                   {
@@ -432,7 +382,6 @@ const Home = () => {
               {
                 title: "Calcolo Parcelle e Tributi",
                 desc: "La gestione della parcella in AvvocApp è costruita con la stessa eleganza, precisione e trasparenza che caratterizzano l’intero ecosistema dello studio: ogni attività svolta si traduce in un valore chiaro, documentato e immediatamente fatturabile, senza calcoli manuali o rischi di errore.",
-                img: images.home.featureParcelle,
                 reverse: true,
                 details: [
                   {
@@ -460,7 +409,6 @@ const Home = () => {
               {
                 title: "Analisi e Reportistica",
                 desc: "L’area Analisi e Reportistica di AvvocApp offre una visione chiara, strutturata e immediatamente utilizzabile dell’intera attività dello studio, trasformando dati complessi in informazioni leggibili, comparabili e utili alle decisioni strategiche.",
-                img: images.home.featureReport,
                 reverse: false,
                 details: [
                   {
@@ -488,7 +436,6 @@ const Home = () => {
               {
                 title: "Portale Clienti Trasparente",
                 desc: "Offri ai tuoi clienti un'esperienza di trasparenza assoluta. Con il Portale Clienti di AvvocApp, i tuoi assistiti possono visualizzare lo stato delle loro pratiche in tempo reale, scaricare documenti autorizzati e ricevere aggiornamenti diretti, tutto sotto il tuo controllo totale.",
-                img: images.home.featureClientPortal,
                 reverse: true,
                 details: [
                   {
@@ -521,25 +468,12 @@ const Home = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 className="space-y-8"
               >
-                <div className={`flex flex-col ${feature.reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-10`}>
-                  <div className="flex-1">
-                    <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-4 tracking-tight">{feature.title}</h3>
-                    <p className="text-sm lg:text-base text-slate-600 mb-6 leading-relaxed font-medium text-justify">
+                <div className="flex flex-col items-center text-center max-w-4xl mx-auto gap-6">
+                  <div className="w-full">
+                    <h3 className="text-xl lg:text-3xl font-bold text-slate-900 mb-4 tracking-tight">{feature.title}</h3>
+                    <p className="text-sm lg:text-lg text-slate-600 mb-6 leading-relaxed font-medium">
                       {feature.desc}
                     </p>
-                  </div>
-                  <div className="flex-1 w-full">
-                    <div className="rounded-xl border border-slate-200 shadow-xl overflow-hidden bg-white group">
-                      <img 
-                        src={feature.img} 
-                        alt={feature.title} 
-                        className="w-full h-auto group-hover:scale-105 transition-transform duration-700 max-h-[300px] object-cover" 
-                        referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          e.currentTarget.src = "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1200&h=800";
-                        }}
-                      />
-                    </div>
                   </div>
                 </div>
 

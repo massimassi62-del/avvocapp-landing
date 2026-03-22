@@ -9,6 +9,11 @@ export interface SiteSettings {
   city: string;
   vatNumber: string;
   presentationVideoUrl: string;
+  pricing: {
+    base: number;
+    pro: number;
+    enterprise: number;
+  };
   socials: {
     linkedin: string;
     twitter: string;
@@ -23,6 +28,11 @@ const DEFAULT_SETTINGS: SiteSettings = {
   city: 'Milano (MI)',
   vatNumber: 'IT 12345678901',
   presentationVideoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Placeholder
+  pricing: {
+    base: 20,
+    pro: 40,
+    enterprise: 60
+  },
   socials: {
     linkedin: '#',
     twitter: '#',
