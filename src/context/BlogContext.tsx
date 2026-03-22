@@ -116,15 +116,6 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
       snapshot.forEach((doc) => {
         blogPosts.push({ id: doc.id, ...doc.data() } as BlogPost);
       });
-      
-      if (blogPosts.length === 0 && loading) {
-        // Initialize with defaults if empty
-        DEFAULT_POSTS.forEach(async (post) => {
-          const { id, ...postData } = post;
-          await setDoc(doc(db, path, id), postData).catch(err => console.error("Error initializing blog:", err));
-        });
-      }
-
       setPosts(blogPosts);
       setLoading(false);
     }, (error) => {
@@ -133,7 +124,21 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => unsubscribe();
-  }, [loading]);
+  }, []);
+
+  useEffect(() => {
+    const path = 'blog_posts';
+    if (!loading && posts.length === 0) {
+      // Only initialize with defaults if the user is the admin
+      const isAdmin = auth.currentUser?.email === "massimassi62@gmail.com" && auth.currentUser?.emailVerified;
+      if (isAdmin) {
+        DEFAULT_POSTS.forEach(async (post) => {
+          const { id, ...postData } = post;
+          await setDoc(doc(db, path, id), postData).catch(err => console.error("Error initializing blog:", err));
+        });
+      }
+    }
+  }, [posts, loading, auth.currentUser]);
 
   const addPost = async (post: Omit<BlogPost, 'id'>) => {
     const path = 'blog_posts';

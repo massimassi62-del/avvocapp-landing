@@ -148,7 +148,8 @@ service cloud.firestore {
 
     match /analytics_sessions/{sessionId} {
       allow create, update: if true; // Allow visitors to manage their sessions
-      allow read, delete: if isAdmin();
+      allow get: if true; // Allow visitors to check if their session exists
+      allow list, delete: if isAdmin();
     }
 
     match /analytics_summary/global {

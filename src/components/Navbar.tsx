@@ -25,6 +25,7 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'AI Legale', href: '/ai-legale' },
+    { name: 'Piani e Prezzi', href: '/prezzi' },
     { name: 'Sicurezza', href: '/sicurezza' },
     { name: 'Blog', href: '/blog' },
     { name: 'FAQ', href: '/faq' },
@@ -66,10 +67,6 @@ const Navbar = () => {
             <Globe size={14} />
             {lang}
           </button>
-
-          <Link to="/prezzi" className={`${isScrolledOrNotHome ? 'bg-[#1e3a8a] text-white hover:bg-[#1e40af]' : 'bg-white text-[#1e3a8a] hover:bg-blue-50'} px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-sm`}>
-            Piani e Prezzi
-          </Link>
 
           <Link 
             to="/admin" 
