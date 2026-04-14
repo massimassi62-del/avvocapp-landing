@@ -17,6 +17,8 @@ import Contact from './pages/Contact';
 import Security from './pages/Security';
 import Blog from './pages/Blog';
 import Admin from './pages/Admin';
+import Demo from './pages/Demo';
+import Maintenance from './pages/Maintenance';
 import CookiePolicy from './pages/CookiePolicy';
 import CookieBanner from './components/CookieBanner';
 import { ImageProvider } from './context/ImageContext';
@@ -29,8 +31,11 @@ import ErrorBoundary from './components/ErrorBoundary';
 
 const AppContent = () => {
   const location = useLocation();
-  const isAdminPage = location.pathname.startsWith('/admin');
+  const isAdminPage = location.pathname.startsWith('/admin') || location.pathname.startsWith('/demo');
   const isHomePage = location.pathname === '/';
+  
+  // Maintenance Mode Toggle (Hardcoded for now as requested)
+  const isMaintenanceMode = true;
 
   useEffect(() => {
     initGA();
@@ -39,6 +44,20 @@ const AppContent = () => {
   useEffect(() => {
     trackPageView(location.pathname);
   }, [location]);
+
+  if (isMaintenanceMode && !isAdminPage) {
+    return (
+      <HelmetProvider>
+        <div className="min-h-screen bg-white font-sans">
+          <Routes>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/demo" element={<Demo />} />
+            <Route path="*" element={<Maintenance />} />
+          </Routes>
+        </div>
+      </HelmetProvider>
+    );
+  }
 
   return (
     <HelmetProvider>
@@ -55,6 +74,7 @@ const AppContent = () => {
             <Route path="/contatti" element={<Contact />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/demo" element={<Demo />} />
           </Routes>
         </main>
         {!isAdminPage && <Footer />}

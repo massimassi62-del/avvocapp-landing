@@ -326,9 +326,9 @@ const Features = () => {
               Vedi i Piani
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a href="https://workflow-engine-81.emergent.host?email=demo@avvocapp.it&password=Demo2026!" target="_blank" className="w-full sm:w-auto bg-white text-slate-700 border border-slate-200 px-10 py-4 rounded-xl text-lg font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+            <Link to="/demo" className="w-full sm:w-auto bg-white text-slate-700 border border-slate-200 px-10 py-4 rounded-xl text-lg font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
               Prova la Demo AI
-            </a>
+            </Link>
           </div>
         </div>
       </section>

@@ -130,17 +130,17 @@ const Home = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Link 
-                to="/admin" 
+                to="/demo" 
                 className="px-8 py-4 bg-white text-[#1e3a8a] rounded-xl font-bold text-lg hover:bg-blue-50 transition-all shadow-xl shadow-black/20 flex items-center justify-center gap-2 group"
               >
-                Prova ora gratis
+                Esplora la Demo
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <a 
                 href="#video" 
                 className="px-8 py-4 bg-transparent border-2 border-white/30 text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
               >
-                Guarda demo
+                Guarda il Video
                 <Zap size={20} className="text-blue-300" />
               </a>
             </motion.div>
@@ -690,14 +690,13 @@ const Home = () => {
               Piani e Prezzi
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a 
-              href="https://workflow-engine-81.emergent.host?email=demo@avvocapp.it&password=Demo2026!" 
-              target="_blank" 
+            <Link 
+              to="/demo" 
               onClick={() => trackEvent('engagement', 'demo_click', 'footer_demo')}
               className="w-full sm:w-auto bg-transparent text-white border border-white/30 px-8 py-3 rounded-lg text-base font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2"
             >
               Esplora la Demo
-            </a>
+            </Link>
           </div>
         </div>
       </section>

@@ -64,13 +64,13 @@ const Pricing = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 mb-10">
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <a href="https://workflow-engine-81.emergent.host?email=demo@avvocapp.it&password=Demo2026!" target="_blank" className="w-full sm:w-auto bg-[#1e3a8a] text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-[#1e40af] transition-all shadow-lg flex items-center justify-center gap-2 group">
+              <Link to="/admin" className="w-full sm:w-auto bg-[#1e3a8a] text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-[#1e40af] transition-all shadow-lg flex items-center justify-center gap-2 group">
                 Registra il tuo Studio
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a href="https://workflow-engine-81.emergent.host?email=demo@avvocapp.it&password=Demo2026!" target="_blank" className="w-full sm:w-auto bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl text-lg font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+              </Link>
+              <Link to="/demo" className="w-full sm:w-auto bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl text-lg font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
                 Esplora la Demo
-              </a>
+              </Link>
             </div>
 
             {/* Demo Credentials Box */}
@@ -193,10 +193,10 @@ const Pricing = () => {
 
                 <div className="mt-auto">
                   <p className="text-xs text-slate-400 mb-6 font-medium">{plan.footer}</p>
-                  <a href="https://workflow-engine-81.emergent.host?email=demo@avvocapp.it&password=Demo2026!" target="_blank" className="block w-full py-3.5 rounded-lg text-sm font-bold text-center transition-all bg-blue-600 text-white hover:bg-blue-700 flex items-center justify-center gap-2 group">
+                  <Link to="/admin" className="block w-full py-3.5 rounded-lg text-sm font-bold text-center transition-all bg-blue-600 text-white hover:bg-blue-700 flex items-center justify-center gap-2 group">
                     {plan.cta}
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}
