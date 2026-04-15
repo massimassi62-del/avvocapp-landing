@@ -129,13 +129,15 @@ const Home = () => {
               transition={{ delay: 0.4 }}
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <Link 
-                to="/demo" 
+              <a 
+                href="https://workflow-engine-81.emergent.host/" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-8 py-4 bg-white text-[#1e3a8a] rounded-xl font-bold text-lg hover:bg-blue-50 transition-all shadow-xl shadow-black/20 flex items-center justify-center gap-2 group"
               >
                 Esplora la Demo
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </a>
               <a 
                 href="#video" 
                 className="px-8 py-4 bg-transparent border-2 border-white/30 text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
@@ -690,13 +692,15 @@ const Home = () => {
               Piani e Prezzi
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link 
-              to="/demo" 
+            <a 
+              href="https://workflow-engine-81.emergent.host/" 
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => trackEvent('engagement', 'demo_click', 'footer_demo')}
               className="w-full sm:w-auto bg-transparent text-white border border-white/30 px-8 py-3 rounded-lg text-base font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2"
             >
               Esplora la Demo
-            </Link>
+            </a>
           </div>
         </div>
       </section>

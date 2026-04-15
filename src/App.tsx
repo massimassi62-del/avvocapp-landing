@@ -35,7 +35,7 @@ const AppContent = () => {
   const isHomePage = location.pathname === '/';
   
   // Maintenance Mode Toggle (Hardcoded for now as requested)
-  const isMaintenanceMode = true;
+  const isMaintenanceMode = false;
 
   useEffect(() => {
     initGA();

@@ -68,9 +68,14 @@ const Pricing = () => {
                 Registra il tuo Studio
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link to="/demo" className="w-full sm:w-auto bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl text-lg font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+              <a 
+                href="https://workflow-engine-81.emergent.host/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl text-lg font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm"
+              >
                 Esplora la Demo
-              </Link>
+              </a>
             </div>
 
             {/* Demo Credentials Box */}

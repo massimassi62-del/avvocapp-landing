@@ -7,8 +7,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Construction, Mail, Phone, Scale, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSettings } from '../context/SettingsContext';
 
 const Maintenance = () => {
+  const { settings } = useSettings();
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 text-center">
       <motion.div 
@@ -44,14 +47,14 @@ const Maintenance = () => {
               <Mail className="text-blue-600" size={20} />
               <div className="text-left">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Email</p>
-                <p className="text-sm font-bold text-slate-900">info@avvocapp.it</p>
+                <p className="text-sm font-bold text-slate-900">{settings.email}</p>
               </div>
             </div>
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-3">
               <Phone className="text-blue-600" size={20} />
               <div className="text-left">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Telefono</p>
-                <p className="text-sm font-bold text-slate-900">+39 02 1234567</p>
+                <p className="text-sm font-bold text-slate-900">{settings.phone}</p>
               </div>
             </div>
           </div>
