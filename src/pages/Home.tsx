@@ -127,23 +127,16 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex justify-center"
             >
               <a 
                 href="https://workflow-engine-81.emergent.host/" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-8 py-4 bg-white text-[#1e3a8a] rounded-xl font-bold text-lg hover:bg-blue-50 transition-all shadow-xl shadow-black/20 flex items-center justify-center gap-2 group"
+                className="px-10 py-5 bg-white text-[#1e3a8a] rounded-xl font-bold text-xl hover:bg-blue-50 transition-all shadow-2xl shadow-blue-900/20 flex items-center justify-center gap-3 group"
               >
-                Esplora la Demo
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a 
-                href="#video" 
-                className="px-8 py-4 bg-transparent border-2 border-white/30 text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
-              >
-                Guarda il Video
-                <Zap size={20} className="text-blue-300" />
+                Inizia ora gratis senza carta di credito
+                <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />
               </a>
             </motion.div>
           </div>
@@ -192,7 +185,7 @@ const Home = () => {
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-4">Scopri AvvocApp in 2 minuti</h2>
             <p className="text-slate-600 font-medium max-w-2xl mx-auto">
-              Guarda come la nostra piattaforma può rivoluzionare il tuo modo di lavorare con una demo rapida.
+              Guarda come la nostra piattaforma può rivoluzionare il tuo modo di lavorare in pochi passi.
             </p>
           </motion.div>
           <motion.div 
@@ -582,24 +575,20 @@ const Home = () => {
               <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
                 Non restare indietro. Unisciti ai professionisti che hanno già scelto l'efficienza dell'IA per gestire pratiche, documenti e clienti.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <Link 
-                  to="/admin" 
+              <div className="flex justify-center">
+                <a 
+                  href="https://workflow-engine-81.emergent.host/" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => trackEvent('engagement', 'demo_click', 'start_now_section')}
                   className="px-10 py-5 bg-[#1e3a8a] text-white rounded-2xl font-bold text-xl hover:bg-[#1e40af] transition-all shadow-xl flex items-center justify-center gap-3 group w-full sm:w-auto"
                 >
-                  Inizia ora gratis
+                  Inizia ora gratis senza carta di credito
                   <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link 
-                  to="/prezzi" 
-                  className="px-10 py-5 bg-white text-slate-700 border-2 border-slate-200 rounded-2xl font-bold text-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-3 w-full sm:w-auto"
-                >
-                  Scopri i Piani
-                </Link>
+                </a>
               </div>
               <p className="mt-8 text-slate-400 text-sm font-medium">
-                Prova gratuita di 14 giorni • Nessuna carta richiesta • Setup in 2 minuti
+                Prova gratuita • Nessuna carta richiesta • Setup immediato
               </p>
             </div>
           </motion.div>
@@ -617,14 +606,16 @@ const Home = () => {
             Inizia oggi la tua prova gratuita di 14 giorni. Nessuna carta di credito richiesta.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              to="/admin" 
+            <a 
+              href="https://workflow-engine-81.emergent.host/" 
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => trackEvent('engagement', 'demo_click', 'hero_cta')}
               className="px-10 py-5 bg-white text-[#1e3a8a] rounded-2xl font-bold text-xl hover:bg-blue-50 transition-all shadow-2xl flex items-center justify-center gap-2 group"
             >
-              Inizia ora gratis
+              Inizia ora gratis senza carta di credito
               <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </a>
             <Link 
               to="/contatti" 
               onClick={() => trackEvent('engagement', 'contact_click', 'hero_secondary')}
@@ -683,23 +674,16 @@ const Home = () => {
             Inizia la tua prova di 30 giorni oggi stesso. <br />
             Nessun impegno, solo efficienza.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
-              to="/prezzi" 
-              onClick={() => trackEvent('engagement', 'pricing_click', 'footer_cta')}
-              className="w-full sm:w-auto bg-white text-[#1e3a8a] px-8 py-3 rounded-lg text-base font-bold hover:bg-blue-50 transition-all shadow-lg flex items-center justify-center gap-2 group"
-            >
-              Piani e Prezzi
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+          <div className="flex justify-center">
             <a 
               href="https://workflow-engine-81.emergent.host/" 
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent('engagement', 'demo_click', 'footer_demo')}
-              className="w-full sm:w-auto bg-transparent text-white border border-white/30 px-8 py-3 rounded-lg text-base font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto bg-white text-[#1e3a8a] px-10 py-4 rounded-xl text-lg font-bold hover:bg-blue-50 transition-all shadow-xl flex items-center justify-center gap-3 group"
             >
-              Esplora la Demo
+              Inizia ora gratis senza carta di credito
+              <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </div>

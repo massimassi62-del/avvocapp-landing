@@ -22,7 +22,7 @@ export interface SiteSettings {
 }
 
 const DEFAULT_SETTINGS: SiteSettings = {
-  phone: '+39 351 930 9220',
+  phone: '351 930 9220',
   email: 'info@avvocapp.it',
   address: 'Via Montenapoleone 8',
   city: 'Milano (MI)',

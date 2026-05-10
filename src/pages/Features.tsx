@@ -319,20 +319,17 @@ const Features = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-slate-900 mb-6 tracking-tight">Pronto a testare il futuro del diritto?</h2>
           <p className="text-slate-600 text-lg mb-10 font-medium">
-            Accedi alla nostra demo e scopri come l'IA può potenziare il tuo studio legale oggi stesso.
+            Inizia ora la tua prova gratuita e scopri come l'IA può potenziare il tuo studio legale oggi stesso.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/prezzi" className="w-full sm:w-auto bg-[#1e3a8a] text-white px-10 py-4 rounded-xl text-lg font-bold hover:bg-[#1e40af] transition-all shadow-lg flex items-center justify-center gap-2 group">
-              Vedi i Piani
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+          <div className="flex justify-center">
             <a 
               href="https://workflow-engine-81.emergent.host/" 
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto bg-white text-slate-700 border border-slate-200 px-10 py-4 rounded-xl text-lg font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm"
+              className="w-full sm:w-auto bg-[#1e3a8a] text-white px-10 py-5 rounded-xl text-xl font-bold hover:bg-[#1e40af] transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 group"
             >
-              Prova la Demo AI
+              Inizia ora gratis senza carta di credito
+              <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </div>

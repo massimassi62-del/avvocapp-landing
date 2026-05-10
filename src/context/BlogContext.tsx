@@ -130,7 +130,7 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const path = 'blog_posts';
     if (!loading && posts.length === 0) {
       // Only initialize with defaults if the user is the admin
-      const isAdmin = auth.currentUser?.email === "massimassi62@gmail.com" && auth.currentUser?.emailVerified;
+      const isAdmin = auth.currentUser?.email === "massimassi62@gmail.com";
       if (isAdmin) {
         DEFAULT_POSTS.forEach(async (post) => {
           const { id, ...postData } = post;

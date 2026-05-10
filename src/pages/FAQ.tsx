@@ -113,9 +113,14 @@ const FAQ = () => {
           <div className="mt-8 p-8 rounded-3xl bg-slate-900 text-white text-center">
             <h3 className="text-xl font-bold mb-4">Hai altre domande?</h3>
             <p className="text-slate-400 mb-8 font-medium">Il nostro team è a tua disposizione per qualsiasi chiarimento.</p>
-            <Link to="/contatti" className="inline-flex bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">
-              Contattaci Ora
-            </Link>
+            <a 
+              href="https://workflow-engine-81.emergent.host/" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all text-center"
+            >
+              Inizia ora gratis senza carta di credito
+            </a>
           </div>
         </div>
       </section>

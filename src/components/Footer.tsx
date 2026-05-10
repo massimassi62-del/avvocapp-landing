@@ -39,7 +39,7 @@ const Footer = () => {
               <li><Link to="/ai-legale" className="hover:text-blue-400 transition-colors">AI Legale</Link></li>
               <li><Link to="/prezzi" className="hover:text-blue-400 transition-colors">Piani e Prezzi</Link></li>
               <li><Link to="/faq" className="hover:text-blue-400 transition-colors">FAQ</Link></li>
-              <li><Link to="/contatti" className="hover:text-blue-400 transition-colors">Richiedi Demo</Link></li>
+              <li><a href="https://workflow-engine-81.emergent.host/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">Inizia ora gratis senza carta di credito</a></li>
             </ul>
           </div>
 

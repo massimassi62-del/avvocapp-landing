@@ -105,13 +105,15 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="pt-6">
-                <Link 
-                  to="/contatti"
+                <a 
+                  href="https://workflow-engine-81.emergent.host/" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block w-full bg-[#1e3a8a] text-white py-4 rounded-xl font-bold text-lg text-center shadow-md"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Inizia Ora
-                </Link>
+                  Inizia ora gratis senza carta di credito
+                </a>
                 <Link 
                   to="/admin" 
                   className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-4 mt-4 rounded-xl font-bold text-lg text-center shadow-md"

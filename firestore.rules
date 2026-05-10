@@ -53,8 +53,11 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() &&
-        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
-          (request.auth.token.email == "massimassi62@gmail.com" && request.auth.token.email_verified == true));
+        (
+          (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+           get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin') ||
+          request.auth.token.email == "massimassi62@gmail.com"
+        );
     }
 
     function isValidEmail(email) {
@@ -64,7 +67,7 @@ service cloud.firestore {
 
     function isValidUrl(url) {
       return url is string &&
-        (url.matches("^https://.*") || url.matches("^http://.*"));
+        (url.matches("^https://.*") || url.matches("^http://.*") || url.matches("^/.*"));
     }
 
     function hasRequiredFields(fields) {

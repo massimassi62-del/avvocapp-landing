@@ -43,7 +43,7 @@ const Contact = () => {
           <div className="grid lg:grid-cols-2 gap-16">
             {/* Contact Form */}
             <div className="bg-white p-6 lg:p-8 rounded-2xl border border-slate-200 shadow-sm">
-              <h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">Richiedi una Demo</h2>
+              <h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">Hai domande? Scrivici</h2>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
